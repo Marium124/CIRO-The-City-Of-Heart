@@ -21,7 +21,8 @@ import {
   HeartPulse,
   Sliders,
   Copy,
-  Info
+  Info,
+  Settings
 } from 'lucide-react';
 import { 
   fetchAgentStatus, 
@@ -242,6 +243,25 @@ const AGENT_META: { [key: string]: any } = {
   }
 };
 
+const AGENT_EMOJIS: Record<string, string> = {
+  signal_ingestion: '📡',
+  event_detection: '🔍',
+  reasoning: '🧠',
+  action_planning: '📋',
+  dispatch: '🚀',
+  simulation: '🔮',
+  visualization: '🗺️'
+};
+
+const CITY_ICONS: Record<string, string> = {
+  'All Cities': '🌍',
+  'Islamabad': '🌲',
+  'Karachi': '🚢',
+  'Lahore': '🕌',
+  'Peshawar': '⛰️',
+  'Quetta': '🏔️'
+};
+
 function App() {
   const [currentTab, setCurrentTab] = useState<'dashboard' | 'monitor' | 'knowledge'>('dashboard');
   const [agents, setAgents] = useState<any>({});
@@ -388,7 +408,10 @@ function App() {
   const filteredContactsList = Object.entries(contacts).filter(([key, contact]: [string, any]) => {
     const matchesSearch = contact.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           contact.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || contact.category === categoryFilter;
+    
+    // Fallback if backend JSON is missing the category attribute
+    const contactCategory = contact.category || (FALLBACK_CONTACTS as any)[key]?.category || 'emergency';
+    const matchesCategory = categoryFilter === 'all' || contactCategory === categoryFilter;
     
     // Check if the contact has numbers for the selected city or defaults
     const hasCity = cityFilter === 'All Cities' || contact.numbers[cityFilter] !== undefined;
@@ -772,21 +795,30 @@ function App() {
                 {Object.keys(AGENT_META).map((id) => {
                   const status = agents[id] || 'idle';
                   return (
-                    <div key={id} className="agent-card">
-                      <div className="agent-header">
-                        <h3 style={{ textTransform: 'capitalize' }}>{id.replace('_', ' ')}</h3>
+                    <div key={id} className="agent-card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <div className="agent-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '2rem' }}>{AGENT_EMOJIS[id] || '⚙️'}</span>
+                          <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{AGENT_META[id]?.name || id.replace('_', ' ')}</h3>
+                        </div>
                         <span className={`status-badge ${getStatusClass(status)}`}>
                           {status}
                         </span>
                       </div>
-                      <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', minHeight: '60px' }}>
-                        {AGENT_META[id]?.description}
+                      
+                      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', flex: 1, alignContent: 'flex-start' }}>
+                        {AGENT_META[id]?.tools?.map((t: string) => (
+                          <span key={t} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                            {t}
+                          </span>
+                        ))}
                       </div>
+
                       <button 
                         onClick={() => { setSelectedAgentId(id); setCurrentTab('monitor'); }} 
-                        style={{ marginTop: 'auto', background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textAlign: 'left', fontWeight: 600, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                        style={{ marginTop: 'auto', background: 'rgba(99, 102, 241, 0.1)', border: 'none', color: 'var(--primary)', padding: '0.6rem', borderRadius: '0.5rem', cursor: 'pointer', textAlign: 'center', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                       >
-                        <Info size={14} /> View Agent Profile
+                        <Settings size={16} /> CONFIGURE
                       </button>
                     </div>
                   );
@@ -853,14 +885,17 @@ function App() {
                       key={id} 
                       className={`agent-list-item ${selectedAgentId === id ? 'selected' : ''}`}
                       onClick={() => { setSelectedAgentId(id); setDiagnosticsReport(null); }}
+                      style={{ padding: '0.75rem', gap: '0.5rem' }}
                     >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                        <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{meta.name}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>ID: {id}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <span style={{ fontSize: '1.75rem' }}>{AGENT_EMOJIS[id] || '⚙️'}</span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+                          <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{meta.name}</span>
+                          <span className={`status-badge ${getStatusClass(status)}`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem', padding: '0.15rem 0.4rem', marginTop: '0.2rem' }}>
+                            {status}
+                          </span>
+                        </div>
                       </div>
-                      <span className={`status-badge ${getStatusClass(status)}`}>
-                        {status}
-                      </span>
                     </div>
                   );
                 })}
@@ -870,19 +905,20 @@ function App() {
               {selectedAgentId && AGENT_META[selectedAgentId] && (
                 <div className="agent-info-panel">
                   {/* Panel Header */}
-                  <div className="details-header">
-                    <div>
-                      <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.5rem' }}>
-                        <Cpu color="var(--primary)" size={28} />
-                        {AGENT_META[selectedAgentId].name}
-                      </h2>
-                      <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', fontSize: '0.95rem', lineHeight: '1.4' }}>
-                        {AGENT_META[selectedAgentId].description}
-                      </p>
+                  <div className="details-header" style={{ alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{ fontSize: '3rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '1rem' }}>
+                        {AGENT_EMOJIS[selectedAgentId] || '⚙️'}
+                      </div>
+                      <div>
+                        <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: 0 }}>
+                          {AGENT_META[selectedAgentId].name}
+                        </h2>
+                        <span className={`status-badge ${getStatusClass(agents[selectedAgentId])}`} style={{ fontSize: '0.8rem', padding: '0.3rem 0.8rem', display: 'inline-block', marginTop: '0.5rem' }}>
+                          {agents[selectedAgentId] || 'idle'}
+                        </span>
+                      </div>
                     </div>
-                    <span className={`status-badge ${getStatusClass(agents[selectedAgentId])}`} style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}>
-                      Status: {agents[selectedAgentId] || 'idle'}
-                    </span>
                   </div>
 
                   {/* Metrics Row */}
@@ -941,37 +977,43 @@ function App() {
                   </div>
 
                   {/* Controls card */}
-                  <div className="controls-card">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>LOGGING PARAMETER</span>
-                        <select 
-                          value={agentLogLevels[selectedAgentId]} 
-                          className="control-select"
-                          onChange={(e) => setAgentLogLevels({
-                            ...agentLogLevels,
-                            [selectedAgentId]: e.target.value
-                          })}
-                        >
-                          <option value="INFO">INFO (Normal)</option>
-                          <option value="DEBUG">DEBUG (Detailed Verbose)</option>
-                          <option value="WARN">WARN (Warnings Only)</option>
-                          <option value="ERROR">ERROR (Fatal Events)</option>
-                        </select>
+                  <div className="controls-card" style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end', background: 'var(--bg-dark)', padding: '1.5rem', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', flex: 1, gap: '2rem', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>LOGGING VERBOSITY</span>
+                        <div style={{ display: 'flex', gap: '0.25rem', background: 'rgba(255,255,255,0.03)', padding: '0.25rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                          {['INFO', 'DEBUG', 'WARN', 'ERROR'].map(level => (
+                            <button
+                              key={level}
+                              onClick={() => setAgentLogLevels({...agentLogLevels, [selectedAgentId]: level})}
+                              style={{
+                                padding: '0.4rem 0.8rem',
+                                borderRadius: '0.35rem',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem',
+                                fontWeight: 'bold',
+                                backgroundColor: agentLogLevels[selectedAgentId] === level || (!agentLogLevels[selectedAgentId] && level === 'INFO') ? 'var(--primary)' : 'transparent',
+                                color: agentLogLevels[selectedAgentId] === level || (!agentLogLevels[selectedAgentId] && level === 'INFO') ? 'white' : 'var(--text-muted)',
+                                transition: 'all 0.2s'
+                              }}
+                            >
+                              {level}
+                            </button>
+                          ))}
+                        </div>
                       </div>
 
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>FORCE CYCLE ACTIONS</span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>SYSTEM OVERRIDE</span>
                         <button 
                           onClick={() => {
                             setAgents({ ...agents, [selectedAgentId]: 'idle' });
                             alert(`Agent [${selectedAgentId}] status forced back to IDLE state.`);
                           }}
-                          style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text-main)', padding: '0.5rem 1rem', borderRadius: '0.5rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                          onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-                          onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
+                          style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: 'var(--danger)', padding: '0.55rem 1rem', borderRadius: '0.5rem', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold', fontSize: '0.85rem' }}
                         >
-                          Restart Agent Core
+                          <RefreshCcw size={16} /> REBOOT CORE
                         </button>
                       </div>
                     </div>
@@ -980,9 +1022,10 @@ function App() {
                       className="btn-primary" 
                       onClick={() => handleRunDiagnostics(selectedAgentId)}
                       disabled={diagnosticsRunning}
+                      style={{ padding: '0.8rem 1.5rem', fontSize: '0.95rem' }}
                     >
-                      {diagnosticsRunning ? <RefreshCcw className="pulse" size={18} /> : <Sliders size={18} />}
-                      Run Diagnostics Check
+                      {diagnosticsRunning ? <RefreshCcw className="pulse" size={18} /> : <Terminal size={18} />}
+                      RUN DIAGNOSTICS
                     </button>
                   </div>
 
@@ -1039,21 +1082,36 @@ function App() {
                 </div>
 
                 {/* City filters */}
-                <div>
-                  <h3 className="kb-sidebar-title">Select Region</h3>
-                  <select 
-                    className="kb-input" 
-                    value={cityFilter}
-                    onChange={(e) => setCityFilter(e.target.value)}
-                    style={{ paddingLeft: '0.75rem', height: '40px', cursor: 'pointer' }}
-                  >
-                    <option value="All Cities">All Cities (Pakistan)</option>
-                    <option value="Islamabad">Islamabad</option>
-                    <option value="Karachi">Karachi</option>
-                    <option value="Lahore">Lahore</option>
-                    <option value="Peshawar">Peshawar</option>
-                    <option value="Quetta">Quetta</option>
-                  </select>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <h3 className="kb-sidebar-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.2rem' }}>📍</span> Operational Region
+                  </h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                    {['All Cities', 'Islamabad', 'Karachi', 'Lahore', 'Peshawar', 'Quetta'].map(city => (
+                      <button
+                        key={city}
+                        onClick={() => setCityFilter(city)}
+                        style={{
+                          background: cityFilter === city ? 'var(--primary)' : 'rgba(255,255,255,0.02)',
+                          color: cityFilter === city ? 'white' : 'var(--text-muted)',
+                          border: `1px solid ${cityFilter === city ? 'var(--primary)' : 'var(--border)'}`,
+                          padding: '0.6rem 0.5rem',
+                          borderRadius: '0.5rem',
+                          fontSize: '0.8rem',
+                          fontWeight: cityFilter === city ? 'bold' : '500',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.4rem'
+                        }}
+                      >
+                        <span style={{ fontSize: '1.1rem' }}>{CITY_ICONS[city]}</span>
+                        {city}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Category filters */}
@@ -1157,11 +1215,23 @@ function App() {
                               <button 
                                 onClick={() => handleSimulateDispatch(key)}
                                 className="btn-primary" 
-                                style={{ width: '100%', fontSize: '0.8rem', padding: '0.5rem', justifyContent: 'center' }}
+                                style={{ 
+                                  width: '100%', 
+                                  fontSize: '0.95rem', 
+                                  padding: '0.85rem', 
+                                  justifyContent: 'center',
+                                  fontWeight: 'bold',
+                                  textTransform: 'uppercase',
+                                  backgroundColor: 
+                                    contact.category === 'emergency' ? 'var(--danger)' : 
+                                    contact.category === 'medical' ? 'var(--success)' : 
+                                    contact.category === 'disaster' ? 'var(--warning)' : 
+                                    contact.category === 'defence' ? 'var(--accent)' : 'var(--primary)'
+                                }}
                                 disabled={dispatchedSimId !== null}
                               >
-                                {dispatchedSimId === key ? <RefreshCcw className="pulse" size={14} /> : <Zap size={14} />}
-                                Simulate Dispatch
+                                {dispatchedSimId === key ? <RefreshCcw className="pulse" size={18} /> : <AlertTriangle size={18} />}
+                                Alert Unit
                               </button>
                             </div>
                           </div>

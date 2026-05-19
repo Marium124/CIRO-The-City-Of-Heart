@@ -32,6 +32,16 @@ class ReasoningAgent(BaseAgent):
                 "traffic_indicator": "high_congestion",
                 "confidence_boost": 0.2
             },
+            "medical_emergency": {
+                "required_signals": ["social_media"],
+                "required_keywords": ["medical", "injury", "sick"],
+                "confidence_boost": 0.25
+            },
+            "explosion": {
+                "required_signals": ["social_media"],
+                "required_keywords": ["explosion", "blast", "bomb"],
+                "confidence_boost": 0.35
+            },
             "traffic_incident": {
                 "required_signals": ["traffic"],
                 "traffic_congestion_threshold": 150,

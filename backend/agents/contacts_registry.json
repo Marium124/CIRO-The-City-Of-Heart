@@ -1,20 +1,20 @@
 {
   "fire_brigade": {
     "name": "Fire Brigade / Rescue 1122",
-    "emoji": "🚒",
+    "emoji": "\ud83d\ude92",
     "description": "Primary fire response and local emergency search and rescue teams.",
     "numbers": {
-      "Islamabad": "1122",
-      "Karachi": "1122",
-      "Lahore": "1122",
-      "Peshawar": "1122",
-      "Quetta": "1122"
+      "Islamabad": "16",
+      "Karachi": "16",
+      "Lahore": "16",
+      "Peshawar": "16",
+      "Quetta": "16"
     },
     "default": "1122"
   },
   "traffic_police": {
     "name": "Traffic Police",
-    "emoji": "🚔",
+    "emoji": "\ud83d\ude94",
     "description": "Helps manage road diversions, route clearance, and vehicular safety.",
     "numbers": {
       "Islamabad": "15",
@@ -27,20 +27,20 @@
   },
   "ndma": {
     "name": "NDMA / PDMA (Disaster Management)",
-    "emoji": "🏛️",
+    "emoji": "\ud83c\udfdb\ufe0f",
     "description": "Provincial and National Disaster Management Authorities for large-scale coordination.",
     "numbers": {
       "Islamabad": "1700",
-      "Karachi": "+92-21-99207900",
-      "Lahore": "+92-42-99212200",
-      "Peshawar": "+92-91-9210577",
-      "Quetta": "+92-81-9202588"
+      "Karachi": "1700",
+      "Lahore": "1700",
+      "Peshawar": "1700",
+      "Quetta": "1700"
     },
     "default": "1700"
   },
   "edhi_foundation": {
     "name": "Edhi Foundation Rescue",
-    "emoji": "🚑",
+    "emoji": "\ud83d\ude91",
     "description": "Immediate private ambulance backup and trauma transportation.",
     "numbers": {
       "Islamabad": "115",
@@ -53,11 +53,11 @@
   },
   "rescue_medical": {
     "name": "Emergency Medical Services",
-    "emoji": "🏥",
+    "emoji": "\ud83c\udfe5",
     "description": "City-specific tertiary care public hospitals and trauma emergency departments.",
     "numbers": {
       "Islamabad": "+92-51-9261170",
-      "Karachi": "+92-21-111-911-911",
+      "Karachi": "+92-21-99215740",
       "Lahore": "+92-42-99231302",
       "Peshawar": "+92-91-9211278",
       "Quetta": "+92-81-9201820"
@@ -66,7 +66,7 @@
   },
   "water_board": {
     "name": "WASA / Water & Sewerage Board",
-    "emoji": "💧",
+    "emoji": "\ud83d\udca7",
     "description": "Manages urban drainage, water contamination, sewer blockages, and pipe bursts.",
     "numbers": {
       "Islamabad": "1334",
@@ -79,7 +79,7 @@
   },
   "civil_defence": {
     "name": "Civil Defence",
-    "emoji": "🛡️",
+    "emoji": "\ud83d\udee1\ufe0f",
     "description": "Mobilizes volunteer services, crowd safety, and infrastructure monitoring teams.",
     "numbers": {
       "Islamabad": "+92-51-9252871",
@@ -92,7 +92,7 @@
   },
   "city_admin": {
     "name": "City Administration & Utilities",
-    "emoji": "🏢",
+    "emoji": "\ud83c\udfe2",
     "description": "Helpline for electric grid repairs and district coordinator's office.",
     "numbers": {
       "Islamabad": "118",

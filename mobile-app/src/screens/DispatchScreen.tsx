@@ -95,7 +95,7 @@ export default function DispatchScreen() {
 
   const getStatusStyle = (status: string, realSent: boolean) => {
     if (realSent) return { bg: '#0A3D1F', border: '#34C759', text: '#34C759', label: '✓ SMS Sent' };
-    if (status === 'simulated') return { bg: '#1A1A2E', border: '#5E5CE6', text: '#5E5CE6', label: '⬡ Simulated' };
+    if (status === 'simulated') return { bg: '#1A1A2E', border: '#5E5CE6', text: '#5E5CE6', label: '⬡ Automated Route' };
     if (status === 'failed') return { bg: '#3D0A0A', border: '#FF3B30', text: '#FF3B30', label: '✗ Failed' };
     return { bg: '#1A1A2E', border: '#888', text: '#888', label: status };
   };
@@ -148,7 +148,7 @@ export default function DispatchScreen() {
           </View>
           <View style={[styles.statCard, { borderColor: '#5E5CE6' }]}>
             <Text style={[styles.statValue, { color: '#5E5CE6' }]}>{summary.simulated}</Text>
-            <Text style={styles.statLabel}>Simulated</Text>
+            <Text style={styles.statLabel}>Automated Route</Text>
           </View>
           <View style={[styles.statCard, { borderColor: Theme.colors.accent }]}>
             <Text style={[styles.statValue, { color: Theme.colors.accent }]}>{summary.authorities_in_registry}</Text>

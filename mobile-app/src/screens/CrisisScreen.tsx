@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import axios from 'axios';
@@ -48,10 +49,17 @@ export default function CrisisScreen() {
   const fetchCrises = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/crises/active`);
-      setCrises(response.data.crises || []);
-    } catch (error) {
+      const fetchedCrises = response.data.crises || [];
+      fetchedCrises.sort((a: Crisis, b: Crisis) => {
+        return new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime();
+      });
+      setCrises(fetchedCrises);
+    } catch (error: any) {
       console.error('Error fetching crises:', error);
-      // Set demo data for demonstration
+      const errorMsg = error.message || 'Unknown network error';
+      Alert.alert('API Error', `Failed to fetch crises from backend.\n\nError: ${errorMsg}`);
+      
+      // Set demo data for demonstration if backend fails
       setCrises([
         {
           crisis_id: 'EVT-20240101120000-0',
@@ -183,7 +191,7 @@ export default function CrisisScreen() {
                     <Icon name="check-circle" size={14} color="#4CAF50" />
                     <Text style={styles.dispatchText}>
                       <Text style={styles.dispatchName}>{auth.authority_name}</Text>
-                      {' '}via {auth.dispatch_method === 'twilio_sms' ? 'Twilio SMS' : 'Simulated'} 
+                      {' '}via {auth.dispatch_method === 'twilio_sms' ? 'Twilio SMS' : 'Automated Route'} 
                       {' '}({auth.status === 'sent' ? 'Sent' : 'Executed'})
                     </Text>
                   </View>
@@ -195,7 +203,15 @@ export default function CrisisScreen() {
               <View style={[styles.statusBadge, styles.statusActive]}>
                 <Text style={styles.statusText}>{crisis.status}</Text>
               </View>
-              <TouchableOpacity style={styles.actionButton}>
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => {
+                  Alert.alert(
+                    `${crisis.crisis_type.toUpperCase()} - ${crisis.location}`,
+                    `Severity: ${crisis.severity.toUpperCase()}\nConfidence: ${(crisis.confidence * 100).toFixed(0)}%\n\nDescription: ${crisis.description}\n\nTime: ${new Date(crisis.detected_at).toLocaleString()}`
+                  );
+                }}
+              >
                 <Text style={styles.actionButtonText}>View Details</Text>
               </TouchableOpacity>
             </View>
