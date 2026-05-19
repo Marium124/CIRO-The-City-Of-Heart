@@ -1,0 +1,4 @@
+{
+  "REASONING_ENGINE": "AGENT_BASED",
+  "NOTES": "Change REASONING_ENGINE to 'STATIC' to use the legacy if-else rule engine, or 'AGENT_BASED' to use the Gemini PDCA loop."
+}

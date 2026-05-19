@@ -131,6 +131,41 @@ class ResourceManager:
 
         return sorted_crises
 
+    @staticmethod
+    def knapsack_allocate(events: List[Dict[str, Any]], total_resources: int) -> List[Dict[str, Any]]:
+        """
+        Allocates resources to events using the knapsack optimization algorithm.
+        Implements Task 2.2 algorithm core.
+        """
+        n = len(events)
+        if n == 0 or total_resources <= 0:
+            return []
+            
+        # Create a DP table (n+1) x (total_resources+1)
+        dp = [[0 for _ in range(total_resources + 1)] for _ in range(n + 1)]
+        
+        # Build the DP table
+        for i in range(1, n + 1):
+            event_resources = events[i-1].get('resource_demand', 1)
+            event_priority = int(events[i-1].get('threat_score', 1) * 10) # scaled for DP if float
+            
+            for r in range(1, total_resources + 1):
+                if event_resources <= r:
+                    dp[i][r] = max(event_priority + dp[i-1][r-event_resources], dp[i-1][r])
+                else:
+                    dp[i][r] = dp[i-1][r]
+        
+        # Find which events are selected
+        selected_indices = []
+        r = total_resources
+        for i in range(n, 0, -1):
+            if dp[i][r] != dp[i-1][r]:
+                selected_indices.append(i-1)
+                r -= events[i-1].get('resource_demand', 1)
+        
+        selected_events = [events[i] for i in selected_indices]
+        return selected_events
+
     def _calculate_urgency(self, severity: str, crisis_type: str) -> float:
         """Calculate urgency score based on severity threat matrix"""
         severity_weights = {"critical": 10.0, "high": 7.0, "medium": 4.0, "low": 1.0}
