@@ -147,7 +147,8 @@ class EventDetectionAgent(BaseAgent):
                     "type": "urgent_report",
                     "location": social_signal["location"],
                     "severity": "high",
-                    "description": f"Urgent report: {social_signal['text'][:50]}..."
+                    "description": f"Urgent report: {social_signal['text'][:50]}...",
+                    "is_sos": "sos" in social_signal['text'].lower() or "mobile_app" in social_signal.get("platform", "")
                 })
                 
         self._log_trace("anomalies_detected", {"count": len(anomalies)})
@@ -188,12 +189,20 @@ class EventDetectionAgent(BaseAgent):
         # Create events from standalone anomalies
         for anomaly in anomalies:
             if not any(e["location"] == anomaly["location"] for e in events):
+                evt_type = anomaly["type"]
+                if evt_type == "urgent_report":
+                    desc_lower = anomaly["description"].lower()
+                    if "flood" in desc_lower: evt_type = "urban_flooding"
+                    elif "medical" in desc_lower: evt_type = "medical_emergency"
+                    elif "explosion" in desc_lower: evt_type = "explosion"
+                    elif "fire" in desc_lower: evt_type = "fire"
+                    
                 event = {
                     "event_id": f"EVT-{datetime.now().strftime('%Y%m%d%H%M%S')}-{len(events)}",
-                    "type": anomaly["type"],
+                    "type": evt_type,
                     "location": anomaly["location"],
                     "coordinates": anomaly.get("coordinates"),
-                    "confidence": 0.7,  # Lower confidence for single anomalies
+                    "confidence": 0.9 if anomaly.get("is_sos") else 0.7,  # Direct SOS bypasses cluster threshold
                     "severity": anomaly["severity"],
                     "signal_count": 1,
                     "description": anomaly["description"],

@@ -34,6 +34,7 @@ export default function ReportScreen() {
         social_media: [{
           platform: 'mobile_app',
           text: `${description} at ${location}`,
+          location: location,
           timestamp: new Date().toISOString(),
         }],
         weather: [],

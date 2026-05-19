@@ -73,25 +73,27 @@ class SignalIngestionAgent(BaseAgent):
         processed = []
         
         for post in posts:
+            text = post.get("text", "") or post.get("content", "")
+            
             # Extract location
-            location = self._extract_location(post.get("text", ""))
+            location = self._extract_location(text)
             
             # Detect language (simplified)
-            language = self._detect_language(post.get("text", ""))
+            language = self._detect_language(text)
             
             # Extract keywords
-            keywords = self._extract_keywords(post.get("text", ""))
+            keywords = self._extract_keywords(text)
             
             processed_signal = {
                 "source": "social_media",
-                "platform": post.get("platform", "unknown"),
-                "text": post.get("text", ""),
+                "platform": post.get("platform", "mobile_app" if "mobile" in str(post.get("source", "")) else "unknown"),
+                "text": text,
                 "location": location if location != "unknown" else post.get("location", "unknown"),
                 "coordinates": post.get("coordinates"),
                 "language": language,
                 "keywords": keywords,
                 "timestamp": post.get("timestamp") or datetime.now().isoformat(),
-                "urgency": self._assess_urgency(post.get("text", "")),
+                "urgency": self._assess_urgency(text),
                 "processed_at": datetime.now().isoformat()
             }
             
@@ -151,6 +153,7 @@ class SignalIngestionAgent(BaseAgent):
         """Extract location from text"""
         # Common Islamabad/Rawalpindi locations
         locations = [
+            "Karachi", "Lahore", "Peshawar", "Quetta", "Multan", "Faisalabad",
             "G-10", "G-11", "G-8", "G-7", "G-6", "G-5",
             "F-10", "F-11", "F-8", "F-7", "F-6", "F-5",
             "George Town", "Blue Area", "Jinnah Avenue",
