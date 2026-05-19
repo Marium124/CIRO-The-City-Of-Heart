@@ -99,7 +99,7 @@ async def run_national_demo():
         print("-" * 30)
 
     print(f"\n[DIGITAL TWIN SIMULATION OUTCOME]")
-    sim_step = next((s for s in steps if s['agent'] == 'simulation'), None)
+    sim_step = next((s for s in result.get('steps', []) if s['agent'] == 'simulation'), None)
     if sim_step:
         sim = sim_step['output'].get('metrics', {})
         print(f"  ✓ LIVES PROTECTED (EST):      {int(sim.get('people_alerted', 0) * 0.12)}")

@@ -129,12 +129,38 @@ class ReasoningAgent(BaseAgent):
         # Calculate base confidence
         confidence = event["confidence"]
         
-        # Apply reasoning rules
-        if rules:
-            confidence = self._apply_reasoning_rules(event, events_data, rules, confidence)
-            
+        # Load engine config
+        import json
+        import os
+        engine = "AGENT_BASED"
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, "r") as f:
+                    config_data = json.load(f)
+                    engine = config_data.get("REASONING_ENGINE", "AGENT_BASED")
+            except Exception:
+                pass
+                
         # Assess Humanitarian Impact using National Scale Utils
         vuln_profile = LocationUtils.get_vulnerability_profile(location, coords["lat"], coords["lng"])
+        
+        gemini_plan = {}
+        if engine == "STATIC":
+            # Apply static reasoning rules
+            if rules:
+                confidence = self._apply_reasoning_rules(event, events_data, rules, confidence)
+            gemini_plan = {
+                "plan": f"Applied Static Rule Engine for {event_type}",
+                "risks": "Static rules cannot adapt dynamically.",
+                "fallback": "Standard emergency response protocol."
+            }
+        else:
+            # GEMINI PROBLEM-SOLVING LOOP (Task 2.1 & 2.4 & 2.5)
+            gemini_plan = self._solve_crisis_with_gemini(event, vuln_profile)
+            # Use Gemini's threat score for confidence mapping
+            confidence = min(0.99, gemini_plan.get("threat_score", 5) / 10.0)
+            
         impact_score = LocationUtils.calculate_life_years_saved(
             event_type, 
             event["severity"], 
@@ -160,7 +186,10 @@ class ReasoningAgent(BaseAgent):
             "ethical_reasoning": ethical_reasoning,
             "impact_assessment": {**impact, **vuln_profile},
             "explanation": explanation,
-            "event_id": event["event_id"]
+            "event_id": event["event_id"],
+            "gemini_plan": gemini_plan.get("plan", ""),
+            "gemini_risks": gemini_plan.get("risks", ""),
+            "gemini_fallback": gemini_plan.get("fallback", "")
         }
         
     def _generate_ethical_reasoning(self, event: Dict, vuln_profile: Dict, impact_score: float) -> str:
@@ -176,6 +205,71 @@ class ReasoningAgent(BaseAgent):
         reasoning += "Focusing on life-safety over purely economic infrastructure protection."
         
         return reasoning
+
+    def _solve_crisis_with_gemini(self, event: Dict, city_context: Dict) -> Dict:
+        """
+        Uses Gemini to generate a threat assessment and problem-solving plan.
+        Implements Task 2.1 & 2.4 PDCA logic.
+        """
+        import os
+        import json
+        try:
+            import vertexai
+            from vertexai.generative_models import GenerativeModel
+            # Initialize Vertex AI
+            project_id = os.environ.get('GCP_PROJECT_ID')
+            if project_id:
+                vertexai.init(project=project_id, location='us-central1')
+                model = GenerativeModel("gemini-1.5-flash-002")
+                
+                # Retrieve past experiences from DB
+                from database.db_setup import SessionLocal, Experience
+                db = SessionLocal()
+                try:
+                    past_experiences = db.query(Experience).filter(Experience.success_score.isnot(None)).order_by(Experience.timestamp.desc()).limit(3).all()
+                    similar_past = [{"action": exp.action_taken, "success": exp.success_score} for exp in past_experiences]
+                finally:
+                    db.close()
+
+                prompt = f"""
+                You are an expert urban crisis coordinator for {city_context.get('city')}.
+                Analyze the following incoming emergency signal and provide a threat assessment.
+                Signal: {json.dumps(event)}
+                Current Context: Population density: {city_context.get('population_density')}, Medical infrastructure: {city_context.get('medical_infrastructure')}
+                Past similar events (with success scores): {json.dumps(similar_past)}
+                
+                Propose an action plan, then predict:
+                - What could go wrong?
+                - What is the fallback if it fails?
+                
+                Respond ONLY with a valid JSON object in this exact format:
+                {{
+                    "threat_score": <integer 1-10>,
+                    "recommended_resources": [<list of strings>],
+                    "plan": "<String describing the plan>",
+                    "risks": "<String describing what could go wrong>",
+                    "fallback": "<String describing the fallback>",
+                    "reasoning": "<Brief explanation of your thought process>"
+                }}
+                """
+                response = model.generate_content(prompt)
+                
+                # Strip Markdown code blocks if present
+                clean_text = response.text.replace("```json", "").replace("```", "").strip()
+                return json.loads(clean_text)
+            else:
+                raise Exception("GCP_PROJECT_ID not set")
+        except Exception as e:
+            print(f"[ReasoningAgent] Gemini fallback triggered due to error or missing config: {e}")
+            # Fallback to static rules for local testing without GCP
+            return {
+                "threat_score": 8 if event.get("severity") == "critical" else 5,
+                "recommended_resources": ["ambulance", "police"],
+                "plan": f"Dispatch standard response to {city_context.get('city')}",
+                "risks": "Traffic congestion",
+                "fallback": "Air support",
+                "reasoning": "Standard static fallback applied."
+            }
 
     def _apply_reasoning_rules(self, event: Dict, events_data: Dict, rules: Dict, base_confidence: float) -> float:
         """Apply reasoning rules to adjust confidence"""

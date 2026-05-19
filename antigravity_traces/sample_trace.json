@@ -1,0 +1,18 @@
+{
+  "trace_id": "TRACE-CIRO-001",
+  "timestamp": "2026-05-19T10:30:00Z",
+  "agent_chain": [
+    {
+      "agent": "SignalIngestionAgent",
+      "input": "Raw: Flooding in Clifton, Karachi",
+      "output": "Normalized: {city: 'Karachi', event_type: 'flood', confidence: 0.92}"
+    },
+    {
+      "agent": "ReasoningAgent (Gemini)",
+      "input": "Normalized signal from SignalIngestionAgent",
+      "output": "Threat Rating: 8.5/10, Resources Needed: [boats, pumps]",
+      "model_used": "gemini-1.5-flash",
+      "latency_ms": 450
+    }
+  ]
+}

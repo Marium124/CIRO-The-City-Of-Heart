@@ -56,6 +56,17 @@ class Action(Base):
     executed_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.now)
 
+class Experience(Base):
+    __tablename__ = "experiences"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    event_id = Column(String, index=True)
+    action_taken = Column(Text)
+    expected_outcome = Column(Text)
+    actual_outcome = Column(Text, nullable=True)
+    success_score = Column(Float, nullable=True)
+    timestamp = Column(DateTime, default=datetime.now)
+
 class AgentLog(Base):
     __tablename__ = "agent_logs"
     
