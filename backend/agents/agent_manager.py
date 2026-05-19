@@ -188,7 +188,7 @@ class AgentManager:
         self._log_antigravity_trace("agent_action", {
             "agent_id": trace.agent_id,
             "action": trace.action,
-            "parameters": trace.parameters
+            "details": trace.details
         })
         
     async def execute_workflow(self, workflow_name: str, input_data: Any) -> Dict[str, Any]:
