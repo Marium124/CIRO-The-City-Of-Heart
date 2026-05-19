@@ -1,0 +1,2 @@
+id,crisis_id,crisis_type,location,severity,confidence,latitude,longitude,humanitarian_score,ethical_reasoning,status,description,detected_at,resolved_at,created_at
+1,CRIS-20260519145604,urban_flooding,G-10,medium,0.99,33.6844,73.0479,2.4,Prioritizing Islamabad due to high population density. Humanitarian impact index: 2.4. Focusing on life-safety over purely economic infrastructure protection.,active,Detected urban flooding in Islamabad. Confidence is 99% with a high impact radius. ,2026-05-19 14:56:04.283871,,2026-05-19 14:56:04.296868

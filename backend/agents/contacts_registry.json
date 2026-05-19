@@ -1,0 +1,106 @@
+{
+  "fire_brigade": {
+    "name": "Fire Brigade / Rescue 1122",
+    "emoji": "🚒",
+    "description": "Primary fire response and local emergency search and rescue teams.",
+    "numbers": {
+      "Islamabad": "1122",
+      "Karachi": "1122",
+      "Lahore": "1122",
+      "Peshawar": "1122",
+      "Quetta": "1122"
+    },
+    "default": "1122"
+  },
+  "traffic_police": {
+    "name": "Traffic Police",
+    "emoji": "🚔",
+    "description": "Helps manage road diversions, route clearance, and vehicular safety.",
+    "numbers": {
+      "Islamabad": "15",
+      "Karachi": "15",
+      "Lahore": "15",
+      "Peshawar": "15",
+      "Quetta": "15"
+    },
+    "default": "15"
+  },
+  "ndma": {
+    "name": "NDMA / PDMA (Disaster Management)",
+    "emoji": "🏛️",
+    "description": "Provincial and National Disaster Management Authorities for large-scale coordination.",
+    "numbers": {
+      "Islamabad": "1700",
+      "Karachi": "+92-21-99207900",
+      "Lahore": "+92-42-99212200",
+      "Peshawar": "+92-91-9210577",
+      "Quetta": "+92-81-9202588"
+    },
+    "default": "1700"
+  },
+  "edhi_foundation": {
+    "name": "Edhi Foundation Rescue",
+    "emoji": "🚑",
+    "description": "Immediate private ambulance backup and trauma transportation.",
+    "numbers": {
+      "Islamabad": "115",
+      "Karachi": "115",
+      "Lahore": "115",
+      "Peshawar": "115",
+      "Quetta": "115"
+    },
+    "default": "115"
+  },
+  "rescue_medical": {
+    "name": "Emergency Medical Services",
+    "emoji": "🏥",
+    "description": "City-specific tertiary care public hospitals and trauma emergency departments.",
+    "numbers": {
+      "Islamabad": "+92-51-9261170",
+      "Karachi": "+92-21-111-911-911",
+      "Lahore": "+92-42-99231302",
+      "Peshawar": "+92-91-9211278",
+      "Quetta": "+92-81-9201820"
+    },
+    "default": "1122"
+  },
+  "water_board": {
+    "name": "WASA / Water & Sewerage Board",
+    "emoji": "💧",
+    "description": "Manages urban drainage, water contamination, sewer blockages, and pipe bursts.",
+    "numbers": {
+      "Islamabad": "1334",
+      "Karachi": "+92-21-99333000",
+      "Lahore": "1334",
+      "Peshawar": "1334",
+      "Quetta": "1334"
+    },
+    "default": "1334"
+  },
+  "civil_defence": {
+    "name": "Civil Defence",
+    "emoji": "🛡️",
+    "description": "Mobilizes volunteer services, crowd safety, and infrastructure monitoring teams.",
+    "numbers": {
+      "Islamabad": "+92-51-9252871",
+      "Karachi": "+92-21-99261455",
+      "Lahore": "+92-42-99211556",
+      "Peshawar": "+92-91-9210340",
+      "Quetta": "+92-81-9202300"
+    },
+    "default": "+92-51-9252871"
+  },
+  "city_admin": {
+    "name": "City Administration & Utilities",
+    "emoji": "🏢",
+    "description": "Helpline for electric grid repairs and district coordinator's office.",
+    "numbers": {
+      "Islamabad": "118",
+      "Karachi": "+92-22-9280130",
+      "Lahore": "118",
+      "Peshawar": "118",
+      "Quetta": "118"
+    },
+    "default": "118"
+  }
+}

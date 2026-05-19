@@ -1,0 +1,25 @@
+id,crisis_id,crisis_type,location,severity,authority_key,authority_name,authority_phone,dispatch_method,status,real_sms_sent,message_preview,dispatched_at,created_at
+1,CRIS-20260519145602,urban_flooding,G-10,,ndma,NDMA (National Disaster Management Authority),1700,simulated,simulated,0,"[CIRO ALERT] 🟠 HIGH
+Crisis: URBAN FLOODING
+Location: G-10
+Confidence: 0%
+Ethical Score: N/A
+Action Required: Immediate d...",2026-05-19 14:56:04.198388,2026-05-19 14:56:04.205313
+2,CRIS-20260519145602,urban_flooding,G-10,,edhi_foundation,Edhi Foundation Rescue,115,simulated,simulated,0,"[CIRO ALERT] 🟠 HIGH
+Crisis: URBAN FLOODING
+Location: G-10
+Confidence: 0%
+Ethical Score: N/A
+Action Required: Immediate d...",2026-05-19 14:56:04.200391,2026-05-19 14:56:04.205313
+3,CRIS-20260519145602,urban_flooding,G-10,,water_board,WASA / Water Supply Authority,1334,simulated,simulated,0,"[CIRO ALERT] 🟠 HIGH
+Crisis: URBAN FLOODING
+Location: G-10
+Confidence: 0%
+Ethical Score: N/A
+Action Required: Immediate d...",2026-05-19 14:56:04.201230,2026-05-19 14:56:04.205313
+4,CRIS-20260519145602,urban_flooding,G-10,,city_admin,City Administration / DC Office,118,simulated,simulated,0,"[CIRO ALERT] 🟠 HIGH
+Crisis: URBAN FLOODING
+Location: G-10
+Confidence: 0%
+Ethical Score: N/A
+Action Required: Immediate d...",2026-05-19 14:56:04.201230,2026-05-19 14:56:04.205313

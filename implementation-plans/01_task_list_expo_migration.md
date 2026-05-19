@@ -1,0 +1,7 @@
+- `[x]` Update `package.json`
+- `[x]` Update `babel.config.js`
+- `[x]` Update `app.json`
+- `[x]` Replace `react-native-vector-icons` with `@expo/vector-icons`
+- `[x]` Replace `react-native-geolocation-service` with `expo-location` (Not used, just removed from package.json)
+- `[/]` Run `npm install` (Waiting for user)
+- `[ ]` Test start the Expo server (Waiting for user)

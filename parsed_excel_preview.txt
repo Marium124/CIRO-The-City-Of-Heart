@@ -1,0 +1,634 @@
+==================================================
+CIRO EMERGENCY CONTACT DETAILS EXCEL PARSE PREVIEW
+==================================================
+
+==================================================
+FILE: CIRO_Emergencies_contact_details.xlsx
+==================================================
+Sheets: ['Sheet1']
+
+--- Sheet: Sheet1 ---
+   Department Names  Unnamed: 1  Karachi (Sindh)  Lahore (Punjab)  Islamabad  Peshawar (KPK)  Quetta (Balochistan)  Unnamed: 7       PDMA Punjab
+0               NaN         NaN              NaN              NaN        NaN             NaN                   NaN         NaN        PDMA Sindh
+1               NaN         NaN              NaN              NaN        NaN             NaN                   NaN         NaN          PDMA KPK
+2               NaN         NaN              NaN              NaN        NaN             NaN                   NaN         NaN  PDMA Balochistan
+
+JSON Data Representation:
+[
+  {
+    "Department Names": null,
+    "Unnamed: 1": null,
+    "Karachi (Sindh)": null,
+    "Lahore (Punjab)": null,
+    "Islamabad": null,
+    "Peshawar (KPK)": null,
+    "Quetta (Balochistan)": null,
+    "Unnamed: 7": null,
+    "PDMA Punjab": "PDMA Sindh"
+  },
+  {
+    "Department Names": null,
+    "Unnamed: 1": null,
+    "Karachi (Sindh)": null,
+    "Lahore (Punjab)": null,
+    "Islamabad": null,
+    "Peshawar (KPK)": null,
+    "Quetta (Balochistan)": null,
+    "Unnamed: 7": null,
+    "PDMA Punjab": "PDMA KPK"
+  },
+  {
+    "Department Names": null,
+    "Unnamed: 1": null,
+    "Karachi (Sindh)": null,
+    "Lahore (Punjab)": null,
+    "Islamabad": null,
+    "Peshawar (KPK)": null,
+    "Quetta (Balochistan)": null,
+    "Unnamed: 7": null,
+    "PDMA Punjab": "PDMA Balochistan"
+  }
+]
+
+==================================================
+FILE: CIRO_Emergencies_contact_details_UPDATED_FORMATTED.xlsx
+==================================================
+Sheets: ['Emergency Contacts']
+
+--- Sheet: Emergency Contacts ---
+                                                                                                               CIRO PAKISTAN — EMERGENCY CONTACT DIRECTORY                            Unnamed: 1          Unnamed: 2       Unnamed: 3      Unnamed: 4      Unnamed: 5            Unnamed: 6
+0   All numbers verified for Karachi (Sindh) · Lahore (Punjab) · Islamabad · Peshawar (KPK) · Quetta (Balochistan)   |   '—' = not applicable in that city                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+1                                                                                                                                                        #                  Department / Service     Karachi (Sindh)  Lahore (Punjab)       Islamabad  Peshawar (KPK)  Quetta (Balochistan)
+2                                                                                                                                     🚨 Emergency & Rescue                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+3                                                                                                                                                     1122           Rescue / Emergency Helpline                1122             1122            1122            1122                  1122
+4                                                                                                                                                       15                      Police Emergency                  15               15              15              15                    15
+5                                                                                                                                                       16                          Fire Brigade                  16               16              16              16                    16
+6                                                                                                                                                      115             Edhi Foundation Ambulance                 115              115             115             115                   115
+7                                                                                                                                                     1020              Chhipa Welfare Ambulance                1020                —               —               —                     —
+8                                                                                                                                                     1122             Aman Foundation Ambulance     021-111-262-611                —               —               —                     —
+9                                                                                                                                                        7                    Bomb Disposal Unit     +92-21-99261200  +92-42-99211600  +92-51-9260654  +92-91-9210490        +92-81-9201820
+10                                                                                                                                                       8                         Civil Defence     +92-21-99261455  +92-42-99211556  +92-51-9252871  +92-91-9210340        +92-81-9202300
+11                                                                                                                                   🏥 Hospitals & Medical                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+12                                                                                                                                         021-111-911-911           Aga Khan Hospital Emergency  +92-21-111-911-911                —               —               —                     —
+13                                                                                                                                                      10      Civil Hospital Karachi Emergency     +92-21-99215740                —               —               —                     —
+14                                                                                                                                            042-99231400             Jinnah Hospital Emergency                   —  +92-42-99231302               —               —                     —
+15                                                                                                                                             051-9261170               PIMS Hospital Emergency                   —                —  +92-51-9261170               —                     —
+16                                                                                                                                             091-9211430       Lady Reading Hospital Emergency                   —                —               —  +92-91-9211278                     —
+17                                                                                                                                                      14    Khyber Teaching Hospital Emergency                   —                —               —  +92-91-9217100                     —
+18                                                                                                                                                      15           Sandeman Hospital Emergency                   —                —               —               —        +92-81-9201820
+19                                                                                                                                                      16    Accident & Trauma Centre (Karachi)     +92-21-35662222                —               —               —                     —
+20                                                                                                                                   🏛 Disaster Management                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+21                                                                                                                                                      17                NDMA National Helpline                   —                —            1700               —                     —
+22                                                                                                                                                      18                     NDMA Headquarters                   —                —  +92-51-9106452               —                     —
+23                                                                                                                                                      19                            PDMA Sindh     +92-21-99207900                —               —               —                     —
+24                                                                                                                                                      20                           PDMA Punjab                   —  +92-42-99212200               —               —                     —
+25                                                                                                                                                      21                              PDMA KPK                   —                —               —  +92-91-9210577                     —
+26                                                                                                                                                      22                      PDMA Balochistan                   —                —               —               —        +92-81-9202588
+27                                                                                                                                                      23          Flood Relief Helpline (NDMA)                   —                —            1700               —                     —
+28                                                                                                                                                      24              Earthquake Relief (ERRA)                   —                —  +92-51-9209320               —                     —
+29                                                                                                                            🪖 Security & Law Enforcement                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+30                                                                                                                                                      25                       Rangers (Sindh)     +92-21-99261500                —               —               —                     —
+31                                                                                                                                                      26                      Rangers (Punjab)                   —  +92-42-99212600               —               —                     —
+32                                                                                                                                                      27                  Frontier Corps (KPK)                   —                —               —  +92-91-9210111                     —
+33                                                                                                                                                      28          Frontier Corps (Balochistan)                   —                —               —               —        +92-81-9201700
+34                                                                                                                                                      29                     Pakistan Army GHQ                   —                —  +92-51-9271000               —                     —
+35                                                                                                                                                      30               Pakistan Navy Emergency     +92-21-48501000                —               —               —                     —
+36                                                                                                                                                      31          Anti-Terrorism Hotline (CTD)     +92-21-99265800  +92-42-99210900  +92-51-9269001  +92-91-9210600        +92-81-9201300
+37                                                                                                                                                      32                   FIA Cybercrime Wing                   —                —  +92-51-9106384               —                     —
+38                                                                                                                                 ⚡ Utilities Emergencies                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+39                                                                                                                                                      33          Gas Emergency (SSGC – Sindh)                1199                —               —               —                     —
+40                                                                                                                                                      34  Gas Emergency (SNGPL – Punjab/North)                   —             1199            1199            1199                     —
+41                                                                                                                                                      35             HESCO Electricity (Sindh)      +92-22-9280130                —               —               —                     —
+42                                                                                                                                                      36            LESCO Electricity (Lahore)                   —              118               —               —                     —
+43                                                                                                                                                      37         IESCO Electricity (Islamabad)                   —                —             118               —                     —
+44                                                                                                                                                      38          PESCO Electricity (Peshawar)                   —                —               —             118                     —
+45                                                                                                                                                      39            QESCO Electricity (Quetta)                   —                —               —               —                   118
+46                                                                                                                                                     133         Karachi Water Board Emergency     +92-21-99333000                —               —               —                     —
+47                                                                                                                             🤝 Social & Health Helplines                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+48                                                                                                                                                    1121     Child Protection Helpline (Sahil)                1098             1098            1098            1098                  1098
+49                                                                                                                                                      42              Women Emergency Helpline                1099             1099            1099            1099                  1099
+50                                                                                                                                                      43               Senior Citizen Helpline                1046             1046            1046            1046                  1046
+51                                                                                                                                                      44        Mental Health Helpline (Umang)                   —                —    0317-4288665               —                     —
+52                                                                                                                                                      45                  Drug Emergency (ANF)                   —                —  +92-51-9106670               —                     —
+53                                                                                                                                                      46               Dengue Helpline (Sindh)     +92-21-99203555                —               —               —                     —
+54                                                                                                                                                      47              Dengue Helpline (Punjab)                   —       0800-99000               —               —                     —
+55                                                                                                                                                      48  COVID / Epidemic Helpline (National)                   —                —      0800-01234               —                     —
+56                                                            ⚠  Numbers are subject to change. Always verify with local authorities. Last reviewed: 2025.                                   NaN                 NaN              NaN             NaN             NaN                   NaN
+
+JSON Data Representation:
+[
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "All numbers verified for Karachi (Sindh) \u00b7 Lahore (Punjab) \u00b7 Islamabad \u00b7 Peshawar (KPK) \u00b7 Quetta (Balochistan)   |   '\u2014' = not applicable in that city",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "#",
+    "Unnamed: 1": "Department / Service",
+    "Unnamed: 2": "Karachi (Sindh)",
+    "Unnamed: 3": "Lahore (Punjab)",
+    "Unnamed: 4": "Islamabad",
+    "Unnamed: 5": "Peshawar (KPK)",
+    "Unnamed: 6": "Quetta (Balochistan)"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\ud83d\udea8 Emergency & Rescue",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "1122",
+    "Unnamed: 1": "Rescue / Emergency Helpline",
+    "Unnamed: 2": "1122",
+    "Unnamed: 3": "1122",
+    "Unnamed: 4": "1122",
+    "Unnamed: 5": "1122",
+    "Unnamed: 6": "1122"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "15",
+    "Unnamed: 1": "Police Emergency",
+    "Unnamed: 2": "15",
+    "Unnamed: 3": "15",
+    "Unnamed: 4": "15",
+    "Unnamed: 5": "15",
+    "Unnamed: 6": "15"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "16",
+    "Unnamed: 1": "Fire Brigade",
+    "Unnamed: 2": "16",
+    "Unnamed: 3": "16",
+    "Unnamed: 4": "16",
+    "Unnamed: 5": "16",
+    "Unnamed: 6": "16"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "115",
+    "Unnamed: 1": "Edhi Foundation Ambulance",
+    "Unnamed: 2": "115",
+    "Unnamed: 3": "115",
+    "Unnamed: 4": "115",
+    "Unnamed: 5": "115",
+    "Unnamed: 6": "115"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "1020",
+    "Unnamed: 1": "Chhipa Welfare Ambulance",
+    "Unnamed: 2": "1020",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "1122",
+    "Unnamed: 1": "Aman Foundation Ambulance",
+    "Unnamed: 2": "021-111-262-611",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 7,
+    "Unnamed: 1": "Bomb Disposal Unit",
+    "Unnamed: 2": "+92-21-99261200",
+    "Unnamed: 3": "+92-42-99211600",
+    "Unnamed: 4": "+92-51-9260654",
+    "Unnamed: 5": "+92-91-9210490",
+    "Unnamed: 6": "+92-81-9201820"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 8,
+    "Unnamed: 1": "Civil Defence",
+    "Unnamed: 2": "+92-21-99261455",
+    "Unnamed: 3": "+92-42-99211556",
+    "Unnamed: 4": "+92-51-9252871",
+    "Unnamed: 5": "+92-91-9210340",
+    "Unnamed: 6": "+92-81-9202300"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\ud83c\udfe5 Hospitals & Medical",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "021-111-911-911",
+    "Unnamed: 1": "Aga Khan Hospital Emergency",
+    "Unnamed: 2": "+92-21-111-911-911",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 10,
+    "Unnamed: 1": "Civil Hospital Karachi Emergency",
+    "Unnamed: 2": "+92-21-99215740",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "042-99231400",
+    "Unnamed: 1": "Jinnah Hospital Emergency",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "+92-42-99231302",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "051-9261170",
+    "Unnamed: 1": "PIMS Hospital Emergency",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9261170",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "091-9211430",
+    "Unnamed: 1": "Lady Reading Hospital Emergency",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "+92-91-9211278",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 14,
+    "Unnamed: 1": "Khyber Teaching Hospital Emergency",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "+92-91-9217100",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 15,
+    "Unnamed: 1": "Sandeman Hospital Emergency",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "+92-81-9201820"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 16,
+    "Unnamed: 1": "Accident & Trauma Centre (Karachi)",
+    "Unnamed: 2": "+92-21-35662222",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\ud83c\udfdb Disaster Management",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 17,
+    "Unnamed: 1": "NDMA National Helpline",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "1700",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 18,
+    "Unnamed: 1": "NDMA Headquarters",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9106452",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 19,
+    "Unnamed: 1": "PDMA Sindh",
+    "Unnamed: 2": "+92-21-99207900",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 20,
+    "Unnamed: 1": "PDMA Punjab",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "+92-42-99212200",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 21,
+    "Unnamed: 1": "PDMA KPK",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "+92-91-9210577",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 22,
+    "Unnamed: 1": "PDMA Balochistan",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "+92-81-9202588"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 23,
+    "Unnamed: 1": "Flood Relief Helpline (NDMA)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "1700",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 24,
+    "Unnamed: 1": "Earthquake Relief (ERRA)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9209320",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\ud83e\ude96 Security & Law Enforcement",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 25,
+    "Unnamed: 1": "Rangers (Sindh)",
+    "Unnamed: 2": "+92-21-99261500",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 26,
+    "Unnamed: 1": "Rangers (Punjab)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "+92-42-99212600",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 27,
+    "Unnamed: 1": "Frontier Corps (KPK)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "+92-91-9210111",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 28,
+    "Unnamed: 1": "Frontier Corps (Balochistan)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "+92-81-9201700"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 29,
+    "Unnamed: 1": "Pakistan Army GHQ",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9271000",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 30,
+    "Unnamed: 1": "Pakistan Navy Emergency",
+    "Unnamed: 2": "+92-21-48501000",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 31,
+    "Unnamed: 1": "Anti-Terrorism Hotline (CTD)",
+    "Unnamed: 2": "+92-21-99265800",
+    "Unnamed: 3": "+92-42-99210900",
+    "Unnamed: 4": "+92-51-9269001",
+    "Unnamed: 5": "+92-91-9210600",
+    "Unnamed: 6": "+92-81-9201300"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 32,
+    "Unnamed: 1": "FIA Cybercrime Wing",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9106384",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\u26a1 Utilities Emergencies",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 33,
+    "Unnamed: 1": "Gas Emergency (SSGC \u2013 Sindh)",
+    "Unnamed: 2": "1199",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 34,
+    "Unnamed: 1": "Gas Emergency (SNGPL \u2013 Punjab/North)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "1199",
+    "Unnamed: 4": "1199",
+    "Unnamed: 5": "1199",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 35,
+    "Unnamed: 1": "HESCO Electricity (Sindh)",
+    "Unnamed: 2": "+92-22-9280130",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 36,
+    "Unnamed: 1": "LESCO Electricity (Lahore)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "118",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 37,
+    "Unnamed: 1": "IESCO Electricity (Islamabad)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "118",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 38,
+    "Unnamed: 1": "PESCO Electricity (Peshawar)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "118",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 39,
+    "Unnamed: 1": "QESCO Electricity (Quetta)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "118"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "133",
+    "Unnamed: 1": "Karachi Water Board Emergency",
+    "Unnamed: 2": "+92-21-99333000",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\ud83e\udd1d Social & Health Helplines",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "1121",
+    "Unnamed: 1": "Child Protection Helpline (Sahil)",
+    "Unnamed: 2": "1098",
+    "Unnamed: 3": "1098",
+    "Unnamed: 4": "1098",
+    "Unnamed: 5": "1098",
+    "Unnamed: 6": "1098"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 42,
+    "Unnamed: 1": "Women Emergency Helpline",
+    "Unnamed: 2": "1099",
+    "Unnamed: 3": "1099",
+    "Unnamed: 4": "1099",
+    "Unnamed: 5": "1099",
+    "Unnamed: 6": "1099"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 43,
+    "Unnamed: 1": "Senior Citizen Helpline",
+    "Unnamed: 2": "1046",
+    "Unnamed: 3": "1046",
+    "Unnamed: 4": "1046",
+    "Unnamed: 5": "1046",
+    "Unnamed: 6": "1046"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 44,
+    "Unnamed: 1": "Mental Health Helpline (Umang)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "0317-4288665",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 45,
+    "Unnamed: 1": "Drug Emergency (ANF)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "+92-51-9106670",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 46,
+    "Unnamed: 1": "Dengue Helpline (Sindh)",
+    "Unnamed: 2": "+92-21-99203555",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 47,
+    "Unnamed: 1": "Dengue Helpline (Punjab)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "0800-99000",
+    "Unnamed: 4": "\u2014",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": 48,
+    "Unnamed: 1": "COVID / Epidemic Helpline (National)",
+    "Unnamed: 2": "\u2014",
+    "Unnamed: 3": "\u2014",
+    "Unnamed: 4": "0800-01234",
+    "Unnamed: 5": "\u2014",
+    "Unnamed: 6": "\u2014"
+  },
+  {
+    "CIRO PAKISTAN \u2014 EMERGENCY CONTACT DIRECTORY": "\u26a0  Numbers are subject to change. Always verify with local authorities. Last reviewed: 2025.",
+    "Unnamed: 1": null,
+    "Unnamed: 2": null,
+    "Unnamed: 3": null,
+    "Unnamed: 4": null,
+    "Unnamed: 5": null,
+    "Unnamed: 6": null
+  }
+]
+

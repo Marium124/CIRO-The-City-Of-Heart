@@ -1,0 +1,4 @@
+id,source,source_type,location,content,timestamp,processed,created_at
+1,social_media,social_media,unknown,Flash flood happening at G-10 for past 30 mins,2026-05-19 14:56:02.826919,0,2026-05-19 14:56:02.833910
+2,weather,weather,G-10,heavy_rain,2026-05-19 14:56:02.826919,0,2026-05-19 14:56:02.833910
+3,traffic,traffic,G-10,severe,2026-05-19 14:56:02.826919,0,2026-05-19 14:56:02.833910

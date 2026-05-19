@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "CIRO",
+    "slug": "crisis-response-app",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "updates": {
+      "enabled": false
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ciro.crisisresponse"
+    },
+    "android": {
+      "package": "com.ciro.crisisresponse"
+    }
+  }
+}

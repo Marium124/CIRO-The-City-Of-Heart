@@ -1,0 +1,12 @@
+id,action_id,plan_id,action_type,location,priority,status,result,executed_at,created_at
+1,ACT-20260519145604-plan_id,CRIS-20260519145604,plan_id,G-10,medium,pending,,,2026-05-19 14:56:04.284872
+2,ACT-20260519145604-crisis_id,CRIS-20260519145604,crisis_id,G-10,medium,pending,,,2026-05-19 14:56:04.284872
+3,ACT-20260519145604-crisis_type,CRIS-20260519145604,crisis_type,G-10,medium,pending,,,2026-05-19 14:56:04.284872
+4,ACT-20260519145604-location,CRIS-20260519145604,location,G-10,medium,pending,,,2026-05-19 14:56:04.284872
+5,ACT-20260519145604-actions,CRIS-20260519145604,actions,G-10,medium,pending,,,2026-05-19 14:56:04.284872
+6,ACT-20260519145604-execution_order,CRIS-20260519145604,execution_order,G-10,medium,pending,,,2026-05-19 14:56:04.285869
+7,ACT-20260519145604-estimated_completion,CRIS-20260519145604,estimated_completion,G-10,medium,pending,,,2026-05-19 14:56:04.285869
+8,ACT-20260519145604-resource_requirements,CRIS-20260519145604,resource_requirements,G-10,medium,pending,,,2026-05-19 14:56:04.285869
+9,ACT-20260519145604-coordination_points,CRIS-20260519145604,coordination_points,G-10,medium,pending,,,2026-05-19 14:56:04.285869
+10,ACT-20260519145604-timestamp,CRIS-20260519145604,timestamp,G-10,medium,pending,,,2026-05-19 14:56:04.285869
+11,ACT-20260519145604-status,CRIS-20260519145604,status,G-10,medium,pending,,,2026-05-19 14:56:04.286873
