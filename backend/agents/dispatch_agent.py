@@ -231,7 +231,6 @@ class DispatchAgent(BaseAgent):
             "crisis_type": crisis_type,
             "location": location,
             "severity": severity,
-            "message_sent": sms_message,
             "timestamp": datetime.now().isoformat(),
         }
 

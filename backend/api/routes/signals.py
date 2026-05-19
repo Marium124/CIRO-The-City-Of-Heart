@@ -13,6 +13,7 @@ router = APIRouter()
 class SocialMediaPost(BaseModel):
     platform: str
     text: str
+    location: Optional[str] = None
     timestamp: Optional[str] = None
     user_id: Optional[str] = None
 
@@ -82,11 +83,13 @@ async def ingest_signals(request: Request, signals: SignalInput):
         for post in signals.social_media:
             post_text = post.text
             # Extract location
-            loc = "Karachi"
-            for city in ["Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "G-10", "George Town"]:
-                if city.lower() in post_text.lower():
-                    loc = city
-                    break
+            loc = post.location
+            if not loc:
+                loc = "Karachi"
+                for city in ["Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "Multan", "Faisalabad", "G-10", "George Town"]:
+                    if city.lower() in post_text.lower():
+                        loc = city
+                        break
             
             # Determine telemetry characteristics based on keywords
             if any(kw in post_text.lower() for kw in ["flood", "rain", "water", "pani", "slum", "storm"]):

@@ -62,6 +62,40 @@ class ActionPlanningAgent(BaseAgent):
                     "resources": ["traffic_police", "tow_trucks"]
                 }
             ],
+            "medical_emergency": [
+                {
+                    "action_type": "emergency_dispatch",
+                    "priority": "critical",
+                    "estimated_duration": "10 min",
+                    "resources": ["ambulance", "medical_team"]
+                },
+                {
+                    "action_type": "scene_secure",
+                    "priority": "high",
+                    "estimated_duration": "15 min",
+                    "resources": ["police"]
+                }
+            ],
+            "explosion": [
+                {
+                    "action_type": "emergency_dispatch",
+                    "priority": "critical",
+                    "estimated_duration": "5 min",
+                    "resources": ["fire_trucks", "ambulance", "rescue_teams", "police"]
+                },
+                {
+                    "action_type": "evacuation",
+                    "priority": "critical",
+                    "estimated_duration": "15 min",
+                    "resources": ["evacuation_team"]
+                },
+                {
+                    "action_type": "public_alert",
+                    "priority": "high",
+                    "estimated_duration": "5 min",
+                    "resources": ["notification_system"]
+                }
+            ],
             "fire": [
                 {
                     "action_type": "emergency_dispatch",
