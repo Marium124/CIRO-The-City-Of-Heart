@@ -17,4 +17,10 @@ describe('CIRO Mobile App Configuration', () => {
     expect(typeof CONFIG.REFRESH_INTERVAL).toBe('number');
     expect(CONFIG.REFRESH_INTERVAL).toBeGreaterThan(0);
   });
+
+  it('should have a defined API_KEY for secure endpoints', () => {
+    expect(CONFIG.API_KEY).toBeDefined();
+    expect(typeof CONFIG.API_KEY).toBe('string');
+    expect(CONFIG.API_KEY.length).toBeGreaterThan(0);
+  });
 });

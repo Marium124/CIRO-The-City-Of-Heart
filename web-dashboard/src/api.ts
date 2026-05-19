@@ -1,4 +1,13 @@
 const API_BASE = 'http://localhost:8000/api';
+const API_KEY = 'ciro-secret-key-2026';
+
+const secureFetch = async (url: string, options: RequestInit = {}) => {
+  const headers = {
+    ...options.headers,
+    'X-API-Key': API_KEY
+  };
+  return fetch(url, { ...options, headers });
+};
 
 export interface AgentStatus {
   [key: string]: string;
@@ -13,36 +22,32 @@ export interface Trace {
 }
 
 export const fetchHealth = async () => {
-  const res = await fetch(`${API_BASE.replace('/api', '')}/health`);
+  const res = await secureFetch(`${API_BASE.replace('/api', '')}/health`);
   return res.json();
 };
 
 export const fetchAgentStatus = async () => {
-  const res = await fetch(`${API_BASE}/agents/status`);
+  const res = await secureFetch(`${API_BASE}/agents/status`);
   return res.json();
 };
 
 export const fetchTraces = async () => {
-  // In a real scenario, we'd have a trace endpoint
-  // For now, we'll fetch logs or generic traces
-  const res = await fetch(`${API_BASE}/agents/logs`);
+  const res = await secureFetch(`${API_BASE}/agents/logs`);
   return res.json();
 };
 
 export const fetchActiveCrises = async () => {
-  const res = await fetch(`${API_BASE}/crises/active`);
+  const res = await secureFetch(`${API_BASE}/crises/active`);
   return res.json();
 };
 
 export const fetchContacts = async () => {
-  const res = await fetch(`${API_BASE}/agents/contacts`);
+  const res = await secureFetch(`${API_BASE}/agents/contacts`);
   return res.json();
 };
 
-
 export const triggerDemoWorkflow = async () => {
-  // We'll use the ingest endpoint to trigger the demo
-  const res = await fetch(`${API_BASE}/signals/ingest`, {
+  const res = await secureFetch(`${API_BASE}/signals/ingest`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
