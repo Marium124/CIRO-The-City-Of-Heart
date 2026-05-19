@@ -25,7 +25,7 @@ interface SystemStatus {
   active_crises: number;
 }
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
   const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -114,7 +114,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Humanitarian Operations</Text>
         
-        <TouchableOpacity style={styles.actionCard}>
+        <TouchableOpacity style={styles.actionCard} onPress={() => navigation.navigate('Report')}>
           <View style={[styles.iconBox, {backgroundColor: Theme.colors.primary + '22'}]}>
             <Icon name="emergency" size={28} color={Theme.colors.primary} />
           </View>
@@ -125,7 +125,7 @@ export default function HomeScreen() {
           <Icon name="chevron-right" size={24} color={Theme.colors.textSecondary} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionCard}>
+        <TouchableOpacity style={styles.actionCard} onPress={() => navigation.navigate('Map')}>
           <View style={[styles.iconBox, {backgroundColor: Theme.colors.secondary + '22'}]}>
             <Icon name="explore" size={28} color={Theme.colors.secondary} />
           </View>
@@ -136,7 +136,7 @@ export default function HomeScreen() {
           <Icon name="chevron-right" size={24} color={Theme.colors.textSecondary} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionCard}>
+        <TouchableOpacity style={styles.actionCard} onPress={() => navigation.navigate('Logs')}>
           <View style={[styles.iconBox, {backgroundColor: Theme.colors.accent + '22'}]}>
             <Icon name="psychology" size={28} color={Theme.colors.accent} />
           </View>

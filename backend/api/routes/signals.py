@@ -75,21 +75,84 @@ async def ingest_signals(request: Request, signals: SignalInput):
     manager = request.app.state.agent_manager
     db = SessionLocal()
     
+    signals_dict = signals.dict()
+    
+    # Auto-synthesize weather and traffic sensor signals if they are empty (citizen reporting mode)
+    if signals.social_media and not signals.weather and not signals.traffic:
+        for post in signals.social_media:
+            post_text = post.text
+            # Extract location
+            loc = "Karachi"
+            for city in ["Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "G-10", "George Town"]:
+                if city.lower() in post_text.lower():
+                    loc = city
+                    break
+            
+            # Determine telemetry characteristics based on keywords
+            if any(kw in post_text.lower() for kw in ["flood", "rain", "water", "pani", "slum", "storm"]):
+                # Flood/Storm parameters
+                weather_point = {
+                    "location": loc,
+                    "temperature": 24.5,
+                    "rainfall": 82.5,
+                    "condition": "Heavy Thunderstorm"
+                }
+                traffic_point = {
+                    "location": loc,
+                    "congestion_level": "heavy",
+                    "congestion_percentage": 92,
+                    "average_speed": 4.5,
+                    "incident_reported": True
+                }
+            elif any(kw in post_text.lower() for kw in ["heat", "hot", "sun", "garmi", "exhaustion"]):
+                # Heatwave parameters
+                weather_point = {
+                    "location": loc,
+                    "temperature": 45.8,
+                    "rainfall": 0.0,
+                    "condition": "Extreme Heatwave"
+                }
+                traffic_point = {
+                    "location": loc,
+                    "congestion_level": "moderate",
+                    "congestion_percentage": 55,
+                    "average_speed": 35.0,
+                    "incident_reported": False
+                }
+            else:
+                # Default accident/infrastructure parameters
+                weather_point = {
+                    "location": loc,
+                    "temperature": 28.0,
+                    "rainfall": 0.0,
+                    "condition": "Clear Sky"
+                }
+                traffic_point = {
+                    "location": loc,
+                    "congestion_level": "critical",
+                    "congestion_percentage": 85,
+                    "average_speed": 8.0,
+                    "incident_reported": True
+                }
+            
+            signals_dict["weather"].append(weather_point)
+            signals_dict["traffic"].append(traffic_point)
+    
     try:
         # Save signals to database for persistence
-        for post in signals.social_media:
-            db.add(Signal(source="social_media", source_type="social_media", location="unknown", content=post.text, timestamp=datetime.now()))
-        for item in signals.weather:
-            db.add(Signal(source="weather", source_type="weather", location=item.location, content=item.condition, timestamp=datetime.now()))
-        for item in signals.traffic:
-            db.add(Signal(source="traffic", source_type="traffic", location=item.location, content=item.congestion_level, timestamp=datetime.now()))
+        for post in signals_dict["social_media"]:
+            db.add(Signal(source="social_media", source_type="social_media", location="unknown", content=post["text"], timestamp=datetime.now()))
+        for item in signals_dict["weather"]:
+            db.add(Signal(source="weather", source_type="weather", location=item["location"], content=item["condition"], timestamp=datetime.now()))
+        for item in signals_dict["traffic"]:
+            db.add(Signal(source="traffic", source_type="traffic", location=item["location"], content=item["congestion_level"], timestamp=datetime.now()))
         
         db.commit()
     finally:
         db.close()
     
     # Trigger workflow in background so mobile app returns immediately
-    asyncio.create_task(manager.execute_workflow("full_cycle", signals.dict()))
+    asyncio.create_task(manager.execute_workflow("full_cycle", signals_dict))
     
     return {
         "status": "received",

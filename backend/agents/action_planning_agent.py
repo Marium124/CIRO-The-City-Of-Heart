@@ -144,6 +144,18 @@ class ActionPlanningAgent(BaseAgent):
         resource_requirements = await self._calculate_resources(actions)
         action_plan["resource_requirements"] = resource_requirements
         
+        # Allocate resources from constrained pool
+        from agents.resource_manager import ResourceManager
+        rm = ResourceManager.get_instance()
+        allocation_result = rm.allocate_resources(
+            action_plan["plan_id"],
+            action_plan["crisis_type"],
+            crisis.get("severity", "low"),
+            list(resource_requirements.keys())
+        )
+        action_plan["resource_allocation"] = allocation_result
+        action_plan["resource_pool_snapshot"] = {k: v["available"] for k, v in rm.inventory.items()}
+        
         # Identify coordination points
         coordination_points = await self._identify_coordination_points(actions)
         action_plan["coordination_points"] = coordination_points
@@ -235,6 +247,15 @@ class ActionPlanningAgent(BaseAgent):
         # Add signal-based parameters
         if template["action_type"] == "traffic_rerouting":
             params["alternate_routes"] = self._suggest_alternate_routes(crisis.get("location"))
+            
+            # Fetch the actual congestion percentage from the active traffic signal if available, otherwise default to 85%
+            initial_congestion = 85
+            traffic_signals = signals.get("traffic", [])
+            for sig in traffic_signals:
+                if sig.get("location") == crisis.get("location") and sig.get("congestion_percentage"):
+                    initial_congestion = sig.get("congestion_percentage")
+                    break
+            params["before_congestion_percent"] = initial_congestion
         elif template["action_type"] == "emergency_dispatch":
             params["dispatch_count"] = self._calculate_dispatch_count(crisis.get("severity"))
         elif template["action_type"] == "public_alert":

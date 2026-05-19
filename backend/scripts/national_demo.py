@@ -84,7 +84,7 @@ def run_national_demo():
     res = get_active_crises()
     if res:
         crises = res.get("crises", [])
-        print(f"\n🎉 Demo Complete! {len(crises)} Active Crises successfully detected and saved in SQLite database.")
+        print(f"\n[SUCCESS] Demo Complete! {len(crises)} Active Crises successfully detected and saved in SQLite database.")
         for c in crises:
             print(f"- {c['crisis_type'].replace('_', ' ').upper()} in {c['location']} (Severity: {c['severity']})")
             print(f"  Coordinates: [{c['latitude']}, {c['longitude']}]")

@@ -119,28 +119,47 @@ class SimulationAgent(BaseAgent):
             return {"success": False, "error": str(e)}
             
     async def _simulate_traffic_rerouting(self, action: Dict) -> Dict:
-        """Simulate traffic rerouting"""
+        """Simulate traffic rerouting with deterministic impact modeling and side-effects"""
         location = action["location"]
         alternate_routes = action["parameters"].get("alternate_routes", [])
+        
+        # Deterministic Model: Congestion reduction depends on alternative capacity
+        routes_count = max(1, len(alternate_routes))
+        base_reduction = 30 if routes_count == 1 else (55 if routes_count == 2 else 70)
+        
+        # Model spillover impact (Unintended side effect: neighboring street congestion rises)
+        spillover_increase = int(base_reduction * 0.35)
+        
+        # Retrieve initial congestion from dynamic parameters
+        before_congestion = action["parameters"].get("before_congestion_percent", 85)
+        after_congestion = max(10, before_congestion - base_reduction)
         
         # Update system state
         self.simulation_state["system_state"]["traffic_routes"][location] = {
             "status": "rerouted",
             "alternate_routes": alternate_routes,
-            "congestion_reduction": random.randint(50, 75),
+            "congestion_reduction": base_reduction,
+            "before_congestion_percent": before_congestion,
+            "after_congestion_percent": after_congestion,
+            "spillover_congestion_increase_percent": spillover_increase,
             "timestamp": datetime.now().isoformat()
         }
         
         self._log_trace("traffic_rerouted", {
             "location": location,
-            "routes": alternate_routes
+            "routes": alternate_routes,
+            "reduction": base_reduction,
+            "side_effect": f"Spillover increased congestion by {spillover_increase}% on alternate arteries."
         })
         
         return {
             "action": "traffic_rerouting",
             "location": location,
             "routes_updated": len(alternate_routes),
-            "estimated_congestion_reduction": self.simulation_state["system_state"]["traffic_routes"][location]["congestion_reduction"]
+            "before_state": f"{before_congestion}% Congestion",
+            "after_state": f"{after_congestion}% Congestion",
+            "estimated_congestion_reduction": base_reduction,
+            "unintended_consequence": f"Traffic spillover increased secondary road congestion by {spillover_increase}%."
         }
         
     async def _simulate_emergency_dispatch(self, action: Dict) -> Dict:

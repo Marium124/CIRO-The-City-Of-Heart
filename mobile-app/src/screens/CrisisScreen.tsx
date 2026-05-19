@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#e91e63',
+  },
   refreshButtonText: {
     color: '#e91e63',
     fontSize: 16,

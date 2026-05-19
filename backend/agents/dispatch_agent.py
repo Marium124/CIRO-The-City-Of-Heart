@@ -99,18 +99,54 @@ SEVERITY_EMOJI = {
 }
 
 
-def _build_sms_message(crisis: Dict) -> str:
-    """Build a concise SMS alert message for an authority."""
+def _build_sms_message(crisis: Dict, authority_key: str = "general") -> str:
+    """Build a concise, custom-tailored SMS alert message depending on the target stakeholder."""
     severity_tag = SEVERITY_EMOJI.get(crisis.get("severity", "high"), "⚠️")
+    location = crisis.get("location", "Unknown")
+    c_type = crisis.get("crisis_type", "Unknown").replace('_', ' ').upper()
+    
+    # 1. Custom Public Advisory Alert
+    if authority_key == "public":
+        return (
+            f"🚨 [CIRO PUBLIC ADVISORY] {severity_tag} 🚨\n"
+            f"SITUATION: Severe {c_type} reported at {location}.\n"
+            f"INSTRUCTION: Avoid low-lying sectors and flooded corridors. Seek elevated shelter. "
+            f"Stay tuned for municipal response updates."
+        )
+    
+    # 2. Custom Hospital / EMS Alert
+    if authority_key in ["rescue_medical", "edhi_foundation"]:
+        return (
+            f"🏥 [CIRO HOSPITALS STANDBY] {severity_tag}\n"
+            f"EVENT: Emergency {c_type} detected at {location}.\n"
+            f"EXPECTED LIVES AFFECTED: {crisis.get('impact_assessment', {}).get('affected_population', 'N/A')} residents.\n"
+            f"ACTION: Prepare emergency triage bay. Stretcher teams standby for rapid trauma intakes."
+        )
+    
+    # 3. Custom Utility / Water Board Alert
+    if authority_key in ["water_board", "civil_defence"]:
+        return (
+            f"💧 [CIRO UTILITIES DEMAND] {severity_tag}\n"
+            f"CRITICAL FAULT: {c_type} threatening local substations at {location}.\n"
+            f"ACTION REQUIRED: Deploy water extraction pumps and high-output generators. Secure municipal assets immediately."
+        )
+        
+    # 4. Custom Transit / Traffic Police Alert
+    if authority_key == "traffic_police":
+        return (
+            f"🚧 [CIRO TRANSIT REROUTING] {severity_tag}\n"
+            f"ARTERY BLOCKED: {c_type} has halted traffic at {location}.\n"
+            f"MUNICIPAL ACTION: Diverting traffic along designated arterial channels. Deploy detour checkpoints immediately."
+        )
+
+    # 5. Default Command Center Dispatch
     return (
-        f"[CIRO ALERT] {severity_tag}\n"
-        f"Crisis: {crisis.get('crisis_type', 'Unknown').replace('_', ' ').upper()}\n"
-        f"Location: {crisis.get('location', 'Unknown')}\n"
-        f"Confidence: {int(crisis.get('confidence', 0) * 100)}%\n"
-        f"Ethical Score: {crisis.get('humanitarian_impact_score', 'N/A')}\n"
-        f"Action Required: Immediate deployment requested.\n"
-        f"Time: {datetime.now().strftime('%H:%M:%S %d-%b-%Y')}\n"
-        f"— CIRO Agentic Response System"
+        f"🏛️ [CIRO COMMAND CENTER DISPATCH] {severity_tag}\n"
+        f"CRISIS: {c_type}\n"
+        f"LOCATION: {location}\n"
+        f"CONFIDENCE: {int(crisis.get('confidence', 0) * 100)}%\n"
+        f"HUMANITARIAN INDEX: {crisis.get('humanitarian_impact_score', 'N/A')}\n"
+        f"ACTION REQUIRED: Rapid deployment initiated. Monitor traces via live command portal."
     )
 
 
@@ -173,13 +209,14 @@ class DispatchAgent(BaseAgent):
             "authorities": [a["name"] for a in authorities_to_contact],
         })
 
-        # ── 2. Build alert message ────────────────────────────────────────────
-        sms_message = _build_sms_message(input_data)
-
         # ── 3. Dispatch to each authority ─────────────────────────────────────
         dispatch_records = []
         for authority in authorities_to_contact:
-            record = await self._dispatch_to_authority(authority, sms_message, input_data)
+            auth_key = authority.get("authority_key", "general")
+            # Build custom tailored message for this specific stakeholder
+            tailored_message = _build_sms_message(input_data, auth_key)
+            
+            record = await self._dispatch_to_authority(authority, tailored_message, input_data)
             dispatch_records.append(record)
             # Small delay to avoid rate limiting
             await asyncio.sleep(0.3)
