@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CIRO Excel Reader Utility</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            margin: 20px;
+        }
+        h1 {
+            color: #89b4fa;
+        }
+        .card {
+            background: #313244;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #45475a;
+        }
+        input[type="file"] {
+            background: #45475a;
+            color: #cdd6f4;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #181825;
+        }
+        th, td {
+            border: 1px solid #45475a;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #11111b;
+            color: #f5c2e7;
+        }
+        tr:nth-child(even) {
+            background: #1e1e2e;
+        }
+        .sheet-buttons {
+            margin-top: 10px;
+        }
+        .sheet-btn {
+            background: #89b4fa;
+            color: #11111b;
+            border: none;
+            padding: 6px 12px;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .sheet-btn:hover {
+            background: #b4befe;
+        }
+    </style>
+</head>
+<body>
+    <h1>CIRO Excel Reader Utility</h1>
+    <div class="card">
+        <h3>Upload and Inspect Excel File</h3>
+        <input type="file" id="upload" accept=".xlsx, .xls">
+        <div id="sheet-buttons" class="sheet-buttons"></div>
+    </div>
+    <div class="card" id="output-card" style="display:none;">
+        <h3 id="sheet-title">Sheet Data</h3>
+        <div id="output-table" style="overflow-x:auto;"></div>
+    </div>
+
+    <script>
+        var workbook = null;
+        document.getElementById('upload').addEventListener('change', handleFile, false);
+
+        function handleFile(e) {
+            var files = e.target.files;
+            var f = files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var data = new Uint8Array(e.target.result);
+                workbook = XLSX.read(data, {type: 'array'});
+                
+                // Show sheet buttons
+                var btnContainer = document.getElementById('sheet-buttons');
+                btnContainer.innerHTML = '';
+                workbook.SheetNames.forEach(function(sheetName) {
+                    var btn = document.createElement('button');
+                    btn.className = 'sheet-btn';
+                    btn.innerText = sheetName;
+                    btn.onclick = function() { displaySheet(sheetName); };
+                    btnContainer.appendChild(btn);
+                });
+                
+                // Display first sheet by default
+                if (workbook.SheetNames.length > 0) {
+                    displaySheet(workbook.SheetNames[0]);
+                }
+            };
+            reader.readAsArrayBuffer(f);
+        }
+
+        function displaySheet(sheetName) {
+            if (!workbook) return;
+            var sheet = workbook.Sheets[sheetName];
+            var html = XLSX.utils.sheet_to_html(sheet);
+            
+            document.getElementById('output-card').style.display = 'block';
+            document.getElementById('sheet-title').innerText = "Sheet: " + sheetName;
+            document.getElementById('output-table').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

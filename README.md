@@ -2,7 +2,7 @@
 
 CIRO is a national-scale, fully autonomous humanitarian response orchestrator designed for Pakistan. Driven by a custom Google Antigravity-inspired multi-agent architecture, CIRO ingests raw multi-source telemetry, fuses independent sensors, prioritizes emergency asset distribution under constraints, and simulates deterministic outcomes and side-effects in real-time.
 
-📹 **Demo Video**: See the submission folder (or [insert hosting link here]) for the end-to-end walkthrough video showing multi-source signal fusion, false alarm retraction, and multi-city resource constraints.
+📹 **Demo Video**: See the submission folder for the end-to-end walkthrough video showing multi-source signal fusion, false alarm retraction, and multi-city resource constraints.
 
 📊 **Antigravity Traces**: Complete execution traces are available in the `/antigravity_traces/` folder of this submission, showcasing full agent memory buffers and routing logs.
 

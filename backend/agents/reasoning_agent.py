@@ -15,6 +15,20 @@ class ReasoningAgent(BaseAgent):
     def __init__(self, agent_id: str, agent_manager):
         super().__init__(agent_id, agent_manager)
         self.reasoning_rules = self._load_reasoning_rules()
+        self.engine = self._load_engine_config()
+        
+    def _load_engine_config(self) -> str:
+        import json
+        import os
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, "r") as f:
+                    config_data = json.load(f)
+                    return config_data.get("REASONING_ENGINE", "AGENT_BASED")
+            except Exception:
+                pass
+        return "AGENT_BASED"
         
     async def setup_tools(self):
         """Setup reasoning and inference tools"""
@@ -129,24 +143,11 @@ class ReasoningAgent(BaseAgent):
         # Calculate base confidence
         confidence = event["confidence"]
         
-        # Load engine config
-        import json
-        import os
-        engine = "AGENT_BASED"
-        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
-        if os.path.exists(config_path):
-            try:
-                with open(config_path, "r") as f:
-                    config_data = json.load(f)
-                    engine = config_data.get("REASONING_ENGINE", "AGENT_BASED")
-            except Exception:
-                pass
-                
         # Assess Humanitarian Impact using National Scale Utils
         vuln_profile = LocationUtils.get_vulnerability_profile(location, coords["lat"], coords["lng"])
         
         gemini_plan = {}
-        if engine == "STATIC":
+        if self.engine == "STATIC":
             # Apply static reasoning rules
             if rules:
                 confidence = self._apply_reasoning_rules(event, events_data, rules, confidence)
