@@ -1,330 +1,5 @@
 [
   {
-    "timestamp": "2026-05-20T00:36:14.193256",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.194690",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.196187",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.197599",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.199239",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.202213",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.203494",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.204829",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.206086",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.208372",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.209706",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.211468",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.214015",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.215475",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.217767",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.219110",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.221529",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.224012",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.225425",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.226791",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.231265",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
     "timestamp": "2026-05-20T00:36:14.232781",
     "event_type": "agent_action",
     "data": {
@@ -740,6 +415,266 @@
       "action": "process",
       "details": {
         "events_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.357251",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.361644",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "text_processor",
+          "location_extractor",
+          "language_detector"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.364262",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.368216",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.374956",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "clustering",
+          "anomaly_detection",
+          "spatial_analysis"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.377285",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.379093",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.381001",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "inference_engine",
+          "ethical_reasoning_v2",
+          "vulnerability_analyzer"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.383856",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.385509",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.387427",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "planning_engine",
+          "coordinator",
+          "resource_allocator"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.391803",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.393022",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.394884",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "twilio_sms",
+          "authority_registry",
+          "dispatch_logger"
+        ],
+        "demo_mode": false
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.397372",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.400579",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.403403",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "traffic_simulator",
+          "emergency_simulator",
+          "alert_simulator"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.405965",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.408553",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.409870",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "chart_generator",
+          "report_generator",
+          "comparison_engine"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:50:16.411520",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
       }
     }
   }

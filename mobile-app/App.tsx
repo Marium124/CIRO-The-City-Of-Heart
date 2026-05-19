@@ -8,6 +8,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
+import axios from 'axios';
+import { CONFIG } from './src/config';
+
+// Globally inject API key for hackathon security validation
+axios.defaults.headers.common['X-API-Key'] = CONFIG.API_KEY || 'ciro-secret-key-2026';
 
 // Screens
 import HomeScreen from './src/screens/HomeScreen';
