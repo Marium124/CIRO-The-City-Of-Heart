@@ -1,18 +1,612 @@
-{
-  "trace_id": "TRACE-CIRO-001",
-  "timestamp": "2026-05-19T10:30:00Z",
-  "agent_chain": [
-    {
-      "agent": "SignalIngestionAgent",
-      "input": "Raw: Flooding in Clifton, Karachi",
-      "output": "Normalized: {city: 'Karachi', event_type: 'flood', confidence: 0.92}"
-    },
-    {
-      "agent": "ReasoningAgent (Gemini)",
-      "input": "Normalized signal from SignalIngestionAgent",
-      "output": "Threat Rating: 8.5/10, Resources Needed: [boats, pumps]",
-      "model_used": "gemini-1.5-flash",
-      "latency_ms": 450
+[
+  {
+    "timestamp": "2026-05-20T00:18:53.907039",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "twilio_sms",
+          "authority_registry",
+          "dispatch_logger"
+        ],
+        "demo_mode": false
+      }
     }
-  ]
-}
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.907548",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.908413",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.909049",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "traffic_simulator",
+          "emergency_simulator",
+          "alert_simulator"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.909692",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.910381",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.911068",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "chart_generator",
+          "report_generator",
+          "comparison_engine"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:18:53.911795",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.185778",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.186656",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "text_processor",
+          "location_extractor",
+          "language_detector"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.187414",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.188153",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.188991",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "clustering",
+          "anomaly_detection",
+          "spatial_analysis"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.189787",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.190561",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.191330",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "inference_engine",
+          "ethical_reasoning_v2",
+          "vulnerability_analyzer"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.192120",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.193084",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.193945",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "planning_engine",
+          "coordinator",
+          "resource_allocator"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.195135",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "action_planning",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.196297",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.197135",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "twilio_sms",
+          "authority_registry",
+          "dispatch_logger"
+        ],
+        "demo_mode": false
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.198051",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "dispatch",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.199831",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.201615",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "traffic_simulator",
+          "emergency_simulator",
+          "alert_simulator"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.203377",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "simulation",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.204351",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "starting"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.205905",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "setup_tools",
+      "details": {
+        "tools": [
+          "chart_generator",
+          "report_generator",
+          "comparison_engine"
+        ]
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.206914",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "visualization",
+      "action": "initialize",
+      "details": {
+        "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.207940",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process",
+      "details": {
+        "input_type": "unknown"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.208984",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "Karachi",
+        "urgency": "low"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.210026",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process_complete",
+      "details": {
+        "social_count": 1,
+        "weather_count": 0,
+        "traffic_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.211111",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "receive_message",
+      "details": {
+        "sender": "signal_ingestion",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.212147",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "send_message",
+      "details": {
+        "receiver": "event_detection",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.213722",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process",
+      "details": {
+        "total_signals": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.214877",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "anomalies_detected",
+      "details": {
+        "count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.216010",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process_complete",
+      "details": {
+        "clusters_found": 0,
+        "anomalies_found": 0,
+        "events_detected": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:06.217229",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "process",
+      "details": {
+        "events_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.219129",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process",
+      "details": {
+        "input_type": "unknown"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.221951",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "Karachi",
+        "urgency": "high"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.223657",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process_complete",
+      "details": {
+        "social_count": 1,
+        "weather_count": 0,
+        "traffic_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.225235",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "receive_message",
+      "details": {
+        "sender": "signal_ingestion",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.226701",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "send_message",
+      "details": {
+        "receiver": "event_detection",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.228194",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process",
+      "details": {
+        "total_signals": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.229537",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "anomalies_detected",
+      "details": {
+        "count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.231775",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process_complete",
+      "details": {
+        "clusters_found": 0,
+        "anomalies_found": 1,
+        "events_detected": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.233413",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "receive_message",
+      "details": {
+        "sender": "event_detection",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.234559",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "send_message",
+      "details": {
+        "receiver": "reasoning",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:08.235728",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "process",
+      "details": {
+        "events_count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T00:19:11.154293",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "ethical_reasoning_complete",
+      "details": {
+        "crisis_detected": false,
+        "impact_score": 10.0,
+        "city": "Karachi"
+      }
+    }
+  }
+]
