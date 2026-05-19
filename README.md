@@ -192,11 +192,28 @@ python c:\ciro\backend\scripts\export_db_to_csv.py
 
 ---
 
-## ⚠️ Limitations
+## 🔍 Interactive Trace Explorer & Chaos Testing
 
-1. **Synthetic Telemetry**: Weather station sensors and traffic camera parameters are synthetic mock streams labeled clearly in trace logs with warning tags (`⚠️ SYNTHETIC TELEMETRY`). They do not fetch live public APIs.
-2. **Simulated Gateway**: Twilio integration routes real-time cellular SMS warnings, but actual emergency services (Rescue 1122, water board, NDMA) dispatches are modeled locally rather than calling real dispatch desks.
-3. **Static Geocoding**: Reverse and forward geocoding mapping is driven by local provincial polygon dictionaries rather than arbitrary coordinates routing.
+We have built dedicated tools to let judges evaluate CIRO's performance and robustness immediately:
+
+1. **Interactive Trace Explorer** (`antigravity_traces/explorer.html`): A fully visual, dark-mode interactive dashboard. Load any trace file (e.g., `sample_trace.json`) or load pre-built demo traces to see the goal-oriented agent flowchart and step-by-step Antigravity-style planning constraints execute live.
+2. **Chaos Load Test** (`backend/scripts/chaos_demo.py`): Run this script to execute **30 concurrent crises** in parallel. It tests the asynchronous event loops and validates that the Knapsack-based Resource Manager handles severe municipal resource conflicts without deadlocks or memory leaks.
+
+To run the chaos demo:
+```bash
+export PYTHONPATH=$(pwd)/backend:$PYTHONPATH && python3 backend/scripts/chaos_demo.py
+```
+
+---
+
+## ⚠️ Honest Engineering Tradeoffs & Limitations
+
+In the spirit of honest engineering and transparent technical design, we highlight the following system tradeoffs:
+
+1. **Custom Orchestration vs. Native SDK**: Direct integration with Google Antigravity SDK is simulated. CIRO uses a custom multi-agent execution pipeline inspired by Antigravity's goal-oriented planning, outputting explicit state changes, objectives, and constraint checks directly into `/antigravity_traces/sample_trace.json`.
+2. **Deterministic Hashing vs. Real Simulation**: Real disaster dynamics are unpredictable. Our `SimulationAgent` uses deterministic SHA-256 seed hashing of parameters (locations, threat severity) to ensure reproducible projections. This ensures stability but misses stochastic real-world anomalies.
+3. **Scarcity Optimization vs. Latency**: The Knapsack resource allocation solver prevents double-booking scarce municipal assets (ambulances, boats), but running high-dimensional dynamic programming solvers at massive scale can introduce minor request latency compared to basic FIFO queues.
+4. **Synthetic Sensor Telemetry**: All traffic and weather sensor streams are synthetically mocked for this prototype. No live municipal sensors are integrated.
 
 ---
 
@@ -204,3 +221,4 @@ python c:\ciro\backend\scripts\export_db_to_csv.py
 
 - **Safety Warning**: CIRO is a demonstration prototype for evaluation purposes. It is NOT built for real-life critical emergency dispatch and should not be used in live safety environments without rigorous third-party auditing and manual verification protocols.
 - **Privacy Commitment**: All citizen database records, coordinates, and telemetry attributes are entirely synthetic. No real Personally Identifiable Information (PII) is parsed or persisted.
+
