@@ -4,7 +4,7 @@
 - [x] **Task 1.1:** Create the `/antigravity_traces/` directory and `sample_trace.json`
 - [x] **Task 1.2:** Fix the `mobile_app_scrrenshot` directory typo
 - [x] **Task 1.3:** Integrate OpenWeatherMap API in `SignalIngestionAgent`
-- [x] **Task 1.4:** Test Twilio SMS with a free account (`test_twilio.py`)
+- [x] **Task 1.4:** Test Twilio SMS with a free account (`backend/scripts/test_twilio.py`)
 
 ## 🤖 Phase 2: Core Agentic Upgrade (The "Brain") & Problem-Solving Loop
 - [x] **Task 2.1:** Replace the static reasoning engine with Gemini (Vertex AI)

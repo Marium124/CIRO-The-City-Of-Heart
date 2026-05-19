@@ -10,3 +10,11 @@ build/
 *.log
 .DS_Store
 .cache/
+.expo/
+mobile-app/.expo/
+mobile-app/node_modules/
+web-dashboard/node_modules/
+*.db
+parsed_excel_preview.txt
+error screenshots/
+ciro video/
