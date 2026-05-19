@@ -6,7 +6,15 @@ Handles social media, weather, and traffic data inputs
 from typing import Dict, List, Any
 from datetime import datetime
 import re
+import os
 from agents.agent_manager import BaseAgent
+
+try:
+    from pyowm import OWM
+    from pyowm.utils.config import get_default_config
+    OWM_INSTALLED = True
+except ImportError:
+    OWM_INSTALLED = False
 
 class SignalIngestionAgent(BaseAgent):
     """Ingests and processes signals from multiple sources"""
@@ -114,10 +122,32 @@ class SignalIngestionAgent(BaseAgent):
                 "temperature": data.get("temperature", 0),
                 "rainfall": data.get("rainfall", 0),
                 "condition": data.get("condition", "unknown"),
-                "alert_level": self._assess_weather_alert(data),
                 "timestamp": data.get("timestamp") or datetime.now().isoformat(),
                 "processed_at": datetime.now().isoformat()
             }
+            
+            # Try fetching real data from OpenWeatherMap
+            api_key = os.environ.get('OPENWEATHER_API_KEY')
+            loc = processed_signal.get("location", "unknown")
+            
+            if OWM_INSTALLED and api_key and loc != "unknown":
+                try:
+                    config_dict = get_default_config()
+                    config_dict['language'] = 'en'
+                    owm = OWM(api_key, config_dict)
+                    mgr = owm.weather_manager()
+                    
+                    # OWM lookup
+                    observation = mgr.weather_at_place(f"{loc}, PK")
+                    w = observation.weather
+                    
+                    processed_signal["temperature"] = w.temperature('celsius')['temp']
+                    processed_signal["rainfall"] = w.rain.get('1h', 0) if w.rain else 0
+                    processed_signal["condition"] = w.detailed_status
+                except Exception as e:
+                    print(f"[SignalIngestionAgent] OWM fetch failed for {loc}: {e}")
+            
+            processed_signal["alert_level"] = self._assess_weather_alert(processed_signal)
             
             processed.append(processed_signal)
             self._log_trace("weather_processed", {"location": data.get("location"), "alert": processed_signal["alert_level"]})
