@@ -87,28 +87,37 @@ class ResourceManager:
     def resolve_multi_crisis_conflict(self, active_crises: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
         Resolves resource bidding conflicts when two crises arrive simultaneously.
-        Favors the higher urgency score, pre-empting or prioritizing allocation.
+        Uses the Knapsack Optimization Algorithm to allocate limited municipal resources.
         """
         if len(active_crises) <= 1:
             return active_crises
 
-        # Sort crises by urgency score descending
-        sorted_crises = sorted(
-            active_crises,
-            key=lambda c: self._calculate_urgency(c.get("severity", "low"), c.get("crisis_type", "")),
-            reverse=True
-        )
-
-        decision_log = []
-        # Pre-allocate resources to the higher priority crisis first
         self.reset_inventory()
         
-        for idx, crisis in enumerate(sorted_crises):
+        # Formulate events for the knapsack algorithm
+        knapsack_events = []
+        for idx, c in enumerate(active_crises):
+            # Calculate dynamic demand
+            demand = 2 if c.get("severity") in ["critical", "high"] else 1
+            # Get threat/urgency score
+            threat = c.get("humanitarian_impact_score", self._calculate_urgency(c.get("severity", "low"), c.get("crisis_type", "")))
+            
+            knapsack_events.append({
+                "index": idx,
+                "resource_demand": demand,
+                "threat_score": threat,
+                "crisis_data": c
+            })
+            
+        # Run knapsack allocation with a total resource limit of 3 (for demonstration conflict)
+        selected_events = self.knapsack_allocate(knapsack_events, total_resources=3)
+        selected_indices = {e["index"] for e in selected_events}
+        
+        for idx, crisis in enumerate(active_crises):
             severity = crisis.get("severity", "low")
             c_type = crisis.get("crisis_type", "")
             c_id = crisis.get("crisis_id", f"C-{idx}")
             
-            # Formulate mock requested resources based on type
             reqs = ["rescue_teams"]
             if c_type == "urban_flooding":
                 reqs.extend(["boats", "water_pumps"])
@@ -117,19 +126,22 @@ class ResourceManager:
             elif c_type == "accident":
                 reqs.extend(["ambulances", "police_units"])
                 
-            allocation = self.allocate_resources(c_id, c_type, severity, reqs)
+            if idx in selected_indices:
+                allocation = self.allocate_resources(c_id, c_type, severity, reqs)
+                allocation["explanation"] = f"✓ KNAPSACK OPTIMIZED: {allocation.get('explanation')}"
+            else:
+                allocation = {
+                    "status": "queued",
+                    "allocated": {},
+                    "queued": {r: (2 if severity in ["critical", "high"] else 1) for r in reqs},
+                    "explanation": "🚨 QUEUED VIA KNAPSACK OPTIMIZATION: Prioritized resources to other high-impact zones.",
+                    "urgency_score": self._calculate_urgency(severity, c_type)
+                }
+                self.active_allocations[c_id] = allocation
+                
             crisis["resource_allocation"] = allocation
-            
-            if idx > 0 and allocation["status"] != "success":
-                # This was the lower priority crisis that suffered due to resource constraints
-                primary_crisis = sorted_crises[0]
-                allocation["explanation"] = (
-                    f"⚠️ CONSTRAINED RESOURCE ALLOCATION: Emergency units prioritized to higher urgency target "
-                    f"[{primary_crisis.get('location')}] (Urgency Score: {self._calculate_urgency(primary_crisis.get('severity'), primary_crisis.get('crisis_type')):.1f}). "
-                    f"Deploying alternate traffic rerouting strategies to mitigate risk."
-                )
 
-        return sorted_crises
+        return active_crises
 
     @staticmethod
     def knapsack_allocate(events: List[Dict[str, Any]], total_resources: int) -> List[Dict[str, Any]]:

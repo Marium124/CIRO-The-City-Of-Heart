@@ -162,6 +162,20 @@ class SimulationAgent(BaseAgent):
             "unintended_consequence": f"Traffic spillover increased secondary road congestion by {spillover_increase}%."
         }
         
+    def _deterministic_value(self, seed_str: str, min_val: int, max_val: int) -> int:
+        """Generates a deterministic integer between min_val and max_val based on seed_str"""
+        import hashlib
+        h = hashlib.sha256(seed_str.encode('utf-8')).hexdigest()
+        val = int(h[:8], 16)
+        return min_val + (val % (max_val - min_val + 1))
+
+    def _deterministic_choice(self, seed_str: str, choices: List[Any]) -> Any:
+        """Selects a deterministic item from choices based on seed_str"""
+        import hashlib
+        h = hashlib.sha256(seed_str.encode('utf-8')).hexdigest()
+        val = int(h[:8], 16)
+        return choices[val % len(choices)]
+
     async def _simulate_emergency_dispatch(self, action: Dict) -> Dict:
         """Simulate emergency service dispatch"""
         location = action["location"]
@@ -175,7 +189,7 @@ class SimulationAgent(BaseAgent):
             "location": location,
             "units_dispatched": dispatch_count,
             "status": "dispatched",
-            "eta_minutes": random.randint(8, 15),
+            "eta_minutes": self._deterministic_value(location + str(dispatch_count), 8, 15),
             "timestamp": datetime.now().isoformat()
         }
         
@@ -199,8 +213,8 @@ class SimulationAgent(BaseAgent):
         location = action["location"]
         alert_radius = action["parameters"].get("alert_radius_km", 2)
         
-        # Estimate affected users
-        affected_users = random.randint(500, 2000)
+        # Estimate affected users deterministically
+        affected_users = self._deterministic_value(location + str(alert_radius), 500, 2000)
         
         alert = {
             "alert_id": f"ALT-{datetime.now().strftime('%Y%m%d%H%M%S')}",
@@ -229,7 +243,7 @@ class SimulationAgent(BaseAgent):
         """Simulate evacuation"""
         location = action["location"]
         
-        evacuated = random.randint(100, 500)
+        evacuated = self._deterministic_value(location + "evacuation", 100, 500)
         
         self._log_trace("evacuation_simulated", {
             "location": location,
@@ -247,7 +261,7 @@ class SimulationAgent(BaseAgent):
         """Simulate incident response"""
         location = action["location"]
         
-        response_time = random.randint(10, 25)
+        response_time = self._deterministic_value(location + "incident", 10, 25)
         
         self._log_trace("incident_response_simulated", {
             "location": location,
@@ -277,7 +291,7 @@ class SimulationAgent(BaseAgent):
         """Simulate infrastructure assessment"""
         location = action["location"]
         
-        damage_level = random.choice(["minor", "moderate", "severe"])
+        damage_level = self._deterministic_choice(location + "infrastructure", ["minor", "moderate", "severe"])
         
         self._log_trace("infrastructure_assessed", {
             "location": location,
@@ -288,7 +302,7 @@ class SimulationAgent(BaseAgent):
             "action": "infrastructure_assessment",
             "location": location,
             "damage_level": damage_level,
-            "repair_estimate_days": random.randint(1, 7)
+            "repair_estimate_days": self._deterministic_value(location + damage_level, 1, 7)
         }
         
     async def _simulate_generic_action(self, action: Dict) -> Dict:

@@ -143,24 +143,91 @@ class AgentManager:
         else:
             print(f"Unknown receiver: {message.receiver}")
             
+    def _log_antigravity_trace(self, event_type: str, data: Dict):
+        """Log explicit Antigravity-style state traces to filesystem"""
+        import os
+        import json
+        from datetime import datetime
+        
+        trace_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "antigravity_traces")
+        os.makedirs(trace_dir, exist_ok=True)
+        
+        trace_file = os.path.join(trace_dir, "sample_trace.json")
+        
+        trace_entry = {
+            "timestamp": datetime.now().isoformat(),
+            "event_type": event_type,
+            "data": data
+        }
+        
+        traces = []
+        if os.path.exists(trace_file):
+            try:
+                with open(trace_file, "r") as f:
+                    traces = json.load(f)
+                    if not isinstance(traces, list):
+                        traces = []
+            except Exception:
+                pass
+                
+        traces.append(trace_entry)
+        traces = traces[-50:] # Limit log size
+        
+        try:
+            with open(trace_file, "w") as f:
+                json.dump(traces, f, indent=2)
+        except Exception:
+            pass
+            
+        print(f"[ANTIGRAVITY TRACE - {event_type.upper()}]: {json.dumps(data, indent=1)}")
+
     def log_agent_trace(self, trace: AgentTrace):
         """Log agent trace globally"""
         self.global_trace.append(trace)
         print(f"[{trace.timestamp.strftime('%H:%M:%S')}] {trace.agent_id}: {trace.action}")
+        self._log_antigravity_trace("agent_action", {
+            "agent_id": trace.agent_id,
+            "action": trace.action,
+            "parameters": trace.parameters
+        })
         
     async def execute_workflow(self, workflow_name: str, input_data: Any) -> Dict[str, Any]:
         """Execute a multi-agent workflow"""
         print(f"\nExecuting workflow: {workflow_name}")
         workflow_start = datetime.now()
         
+        # Generate explicit task plan (Antigravity-style goal planning)
+        task_plan = {
+            "goal": f"Crisis response: {workflow_name}",
+            "steps": [
+                {"agent": "signal_ingestion", "task": "Ingest and normalize multi-source signals"},
+                {"agent": "event_detection", "task": "Spatial-temporal clustering of signals"},
+                {"agent": "reasoning", "task": "Assess severity and humanitarian impact"},
+                {"agent": "action_planning", "task": "Generate constrained resource allocation plan"},
+                {"agent": "simulation", "task": "Simulate action outcomes and side-effects"},
+                {"agent": "dispatch", "task": "Notify relevant authorities"},
+                {"agent": "visualization", "task": "Push dynamic updates to dashboard"}
+            ],
+            "constraints": [
+                "Total resources cannot exceed municipal inventory",
+                "Confidence threshold >= 0.6 for autonomous dispatch",
+                "Response time target < 15 minutes"
+            ],
+            "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
+        }
+        
+        self._log_antigravity_trace("task_plan_generated", task_plan)
+        
         result = {
             "workflow": workflow_name,
             "start_time": workflow_start.isoformat(),
             "steps": [],
-            "final_result": None
+            "final_result": None,
+            "task_plan": task_plan
         }
         
         try:
+            self._log_antigravity_trace("workflow_execution_started", {"workflow": workflow_name})
             if workflow_name == "crisis_detection":
                 result = await self._crisis_detection_workflow(input_data, result)
             elif workflow_name == "action_planning":
