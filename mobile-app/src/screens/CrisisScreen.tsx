@@ -37,101 +37,98 @@ interface Crisis {
   }[];
 }
 
+const DEMO_CRISES: Crisis[] = [
+  {
+    crisis_id: 'EVT-20260520-001',
+    crisis_type: 'urban_flooding',
+    location: 'Clifton, Karachi',
+    severity: 'critical',
+    confidence: 0.94,
+    status: 'active',
+    description: 'Multi-source signal fusion: 12 citizen SOS reports + weather station rainfall 95mm/hr + traffic camera congestion 92%. Water levels rising rapidly in low-lying sectors.',
+    detected_at: '2026-05-20T09:30:00.000Z',
+    dispatched_authorities: [
+      { authority_name: 'NDMA Karachi', authority_phone: '1700', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: '2026-05-20T09:31:00.000Z' },
+      { authority_name: 'WASA / Water Board', authority_phone: '1334', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: '2026-05-20T09:32:00.000Z' },
+    ]
+  },
+  {
+    crisis_id: 'EVT-20260520-002',
+    crisis_type: 'fire_emergency',
+    location: 'Saddar, Karachi',
+    severity: 'high',
+    confidence: 0.87,
+    status: 'active',
+    description: 'Fire reported near commercial district. 4 citizen reports confirmed by traffic camera anomaly detection. Smoke plume detected.',
+    detected_at: '2026-05-20T09:15:00.000Z',
+    dispatched_authorities: [
+      { authority_name: 'Fire Brigade / Rescue 1122', authority_phone: '1122', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: '2026-05-20T09:16:00.000Z' },
+      { authority_name: 'Edhi Foundation Rescue', authority_phone: '115', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: '2026-05-20T09:17:00.000Z' },
+    ]
+  },
+  {
+    crisis_id: 'EVT-20260520-003',
+    crisis_type: 'traffic_gridlock',
+    location: 'G-10, Islamabad',
+    severity: 'medium',
+    confidence: 0.76,
+    status: 'active',
+    description: 'Severe traffic congestion reported. Average speed dropped to 5 km/h. Possible road blockage or accident detected via camera feed.',
+    detected_at: '2026-05-20T08:50:00.000Z',
+    dispatched_authorities: [
+      { authority_name: 'Traffic Police', authority_phone: '15', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: '2026-05-20T08:51:00.000Z' },
+    ]
+  },
+  {
+    crisis_id: 'EVT-20260520-004',
+    crisis_type: 'structural_collapse',
+    location: 'Lyari, Karachi',
+    severity: 'critical',
+    confidence: 0.91,
+    status: 'active',
+    description: 'Building collapse reported in Lyari. Multiple SOS signals from surrounding area. Rescue teams and ambulances dispatched immediately.',
+    detected_at: '2026-05-20T09:35:00.000Z',
+    dispatched_authorities: [
+      { authority_name: 'Civil Defence', authority_phone: '1122', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: '2026-05-20T09:36:00.000Z' },
+      { authority_name: 'Edhi Foundation Rescue', authority_phone: '115', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: '2026-05-20T09:36:00.000Z' },
+      { authority_name: 'Emergency Medical Services', authority_phone: '1122', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: '2026-05-20T09:37:00.000Z' },
+    ]
+  },
+];
+
 export default function CrisisScreen() {
-  const [crises, setCrises] = useState<Crisis[]>([]);
+  const [crises, setCrises] = useState<Crisis[]>(DEMO_CRISES);
   const [loading, setLoading] = useState(true);
   const [selectedCrisis, setSelectedCrisis] = useState<Crisis | null>(null);
 
-  const DEMO_CRISES: Crisis[] = [
-    {
-      crisis_id: 'EVT-20260520-001',
-      crisis_type: 'urban_flooding',
-      location: 'Clifton, Karachi',
-      severity: 'critical',
-      confidence: 0.94,
-      status: 'active',
-      description: 'Multi-source signal fusion: 12 citizen SOS reports + weather station rainfall 95mm/hr + traffic camera congestion 92%. Water levels rising rapidly in low-lying sectors.',
-      detected_at: new Date(Date.now() - 8 * 60000).toISOString(),
-      dispatched_authorities: [
-        { authority_name: 'NDMA Karachi', authority_phone: '1700', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: new Date(Date.now() - 7 * 60000).toISOString() },
-        { authority_name: 'WASA / Water Board', authority_phone: '1334', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: new Date(Date.now() - 6 * 60000).toISOString() },
-      ]
-    },
-    {
-      crisis_id: 'EVT-20260520-002',
-      crisis_type: 'fire_emergency',
-      location: 'Saddar, Karachi',
-      severity: 'high',
-      confidence: 0.87,
-      status: 'active',
-      description: 'Fire reported near commercial district. 4 citizen reports confirmed by traffic camera anomaly detection. Smoke plume detected.',
-      detected_at: new Date(Date.now() - 22 * 60000).toISOString(),
-      dispatched_authorities: [
-        { authority_name: 'Fire Brigade / Rescue 1122', authority_phone: '1122', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: new Date(Date.now() - 21 * 60000).toISOString() },
-        { authority_name: 'Edhi Foundation Rescue', authority_phone: '115', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: new Date(Date.now() - 20 * 60000).toISOString() },
-      ]
-    },
-    {
-      crisis_id: 'EVT-20260520-003',
-      crisis_type: 'traffic_gridlock',
-      location: 'G-10, Islamabad',
-      severity: 'medium',
-      confidence: 0.76,
-      status: 'active',
-      description: 'Severe traffic congestion reported. Average speed dropped to 5 km/h. Possible road blockage or accident detected via camera feed.',
-      detected_at: new Date(Date.now() - 45 * 60000).toISOString(),
-      dispatched_authorities: [
-        { authority_name: 'Traffic Police', authority_phone: '15', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: new Date(Date.now() - 44 * 60000).toISOString() },
-      ]
-    },
-    {
-      crisis_id: 'EVT-20260520-004',
-      crisis_type: 'structural_collapse',
-      location: 'Lyari, Karachi',
-      severity: 'critical',
-      confidence: 0.91,
-      status: 'active',
-      description: 'Building collapse reported in Lyari. Multiple SOS signals from surrounding area. Rescue teams and ambulances dispatched immediately.',
-      detected_at: new Date(Date.now() - 3 * 60000).toISOString(),
-      dispatched_authorities: [
-        { authority_name: 'Civil Defence', authority_phone: '1122', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: new Date(Date.now() - 2 * 60000).toISOString() },
-        { authority_name: 'Edhi Foundation Rescue', authority_phone: '115', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true, dispatched_at: new Date(Date.now() - 2 * 60000).toISOString() },
-        { authority_name: 'Emergency Medical Services', authority_phone: '1122', dispatch_method: 'simulated', status: 'executed', real_sms_sent: false, dispatched_at: new Date(Date.now() - 1 * 60000).toISOString() },
-      ]
-    },
-  ];
-
   useEffect(() => {
-    fetchCrises();
-    // Auto-refresh every 5 seconds so new SOS-triggered crises appear
-    const interval = setInterval(fetchCrises, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    let mounted = true;
 
-  const fetchCrises = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/crises/active`);
-      const fetchedCrises = response.data.crises || [];
-      
-      // Merge real backend crises on top of demo data
-      // This ensures the screen is never empty AND new SOS crises appear
-      const realIds = new Set(fetchedCrises.map((c: Crisis) => c.crisis_id));
-      const demoFiltered = DEMO_CRISES.filter(d => !realIds.has(d.crisis_id));
-      const merged = [...fetchedCrises, ...demoFiltered];
-      
-      merged.sort((a: Crisis, b: Crisis) => {
-        return new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime();
-      });
-      setCrises(merged);
-    } catch (error: any) {
-      console.warn('Backend unavailable, loading demo crises:', error.message);
-      if (crises.length === 0) {
-        setCrises(DEMO_CRISES);
+    const fetchCrises = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/crises/active`);
+        const fetchedCrises = response.data.crises || [];
+        if (!mounted) return;
+        
+        // Merge real backend crises on top of demo data
+        const realIds = new Set(fetchedCrises.map((c: Crisis) => c.crisis_id));
+        const demoFiltered = DEMO_CRISES.filter(d => !realIds.has(d.crisis_id));
+        const merged = [...fetchedCrises, ...demoFiltered];
+        merged.sort((a: Crisis, b: Crisis) =>
+          new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime()
+        );
+        setCrises(merged);
+      } catch {
+        // Keep existing data on error
+      } finally {
+        if (mounted) setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchCrises();
+    const interval = setInterval(fetchCrises, 10000);
+    return () => { mounted = false; clearInterval(interval); };
+  }, []);
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
