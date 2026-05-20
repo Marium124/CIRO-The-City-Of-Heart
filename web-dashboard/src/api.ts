@@ -52,13 +52,17 @@ export const triggerDemoWorkflow = async () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       social_media: [
-        { platform: 'twitter', text: 'Flash flood happening at G-10 for past 30 mins' }
+        { platform: 'twitter', text: 'Flash flood happening at G-10 for past 30 mins, roads completely submerged', location: 'G-10' },
+        { platform: 'twitter', text: 'Flooding in G-10 Islamabad, water entering homes, need rescue boats urgently', location: 'G-10' },
+        { platform: 'facebook', text: 'G-10 flood situation critical, children stranded on rooftops, please send help', location: 'G-10' },
+        { platform: 'whatsapp', text: 'SOS: massive water logging G-10 sector, all vehicles stuck, ambulance cannot pass', location: 'G-10' },
+        { platform: 'citizen_report', text: 'G-10 Islamabad flooded, power outage in entire sector, elderly trapped', location: 'G-10' }
       ],
       weather: [
-        { location: 'G-10', temperature: 24, rainfall: 55, condition: 'heavy_rain' }
+        { location: 'G-10', temperature: 22, rainfall: 95, condition: 'Heavy Thunderstorm' }
       ],
       traffic: [
-        { location: 'G-10', congestion_level: 'severe', congestion_percentage: 250, average_speed: 15, incident_reported: true }
+        { location: 'G-10', congestion_level: 'critical', congestion_percentage: 98, average_speed: 2, incident_reported: true }
       ]
     })
   });
