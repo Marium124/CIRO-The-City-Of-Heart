@@ -3,738 +3,414 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CIRO | Antigravity Trace Explorer</title>
-  <!-- Google Fonts & Tailwind/FontAwesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+  <title>CIRO Antigravity Trace Explorer | Google Hackathon 2026</title>
   <style>
-    :root {
-      --bg: #030712;
-      --card-bg: rgba(17, 24, 39, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.15);
-      --accent: #8b5cf6;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
-      background-attachment: fixed;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0e27;
+      color: #e2e8f0;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding: 20px;
     }
-
-    header {
-      background: rgba(3, 7, 18, 0.8);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 1.25rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .logo-icon {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-      color: white;
-    }
-
-    .logo-text h1 {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      background: linear-gradient(to right, #ffffff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .logo-text p {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .actions-bar {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .btn:hover {
-      border-color: var(--primary);
-      background: rgba(99, 102, 241, 0.05);
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border: none;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
-    }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      gap: 2rem;
-    }
-
-    @media (max-width: 1024px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.75rem;
-    }
-
-    /* Flowchart / Node Map visualization */
-    .flowchart-container {
-      position: relative;
-      height: 480px;
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-      border: 1px dashed var(--border);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .flow-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      width: 90%;
-      gap: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .flow-node {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .header {
       text-align: center;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
     }
-
-    .flow-node:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
-    }
-
-    .flow-node.active {
-      border-color: var(--success);
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
-    }
-
-    .flow-node.running {
-      border-color: var(--warning);
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
-      animation: pulse-border 1.5s infinite alternate;
-    }
-
-    @keyframes pulse-border {
-      0% { border-color: var(--border); }
-      100% { border-color: var(--warning); }
-    }
-
-    .node-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .node-title {
-      font-size: 0.85rem;
-      font-weight: 700;
+    .header h1 { font-size: 2rem; margin-bottom: 8px; }
+    .header p { opacity: 0.9; font-size: 0.95rem; }
+    .badge {
+      display: inline-block;
+      background: #10b981;
       color: white;
-      margin-bottom: 0.25rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 10px;
     }
-
-    .node-status {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      font-weight: 800;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.05);
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    /* Task Plan Flowchart */
+    .task-plan {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid #334155;
     }
-
-    .flow-connection {
-      position: absolute;
-      top: 50%;
-      left: 5%;
-      width: 90%;
-      height: 2px;
-      background: linear-gradient(to right, var(--primary), var(--accent));
-      opacity: 0.3;
-      z-index: 1;
-    }
-
-    /* Trace Details List */
-    .trace-list {
+    .task-plan h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
       display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 0.5rem;
-    }
-
-    .trace-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .trace-item:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    .trace-meta {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      gap: 8px;
     }
-
-    .trace-agent-tag {
-      font-family: 'JetBrains Mono', monospace;
-      background: rgba(99, 102, 241, 0.1);
-      color: #a5b4fc;
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-
-    .trace-action-name {
-      font-weight: 700;
+    .goal-box {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       color: white;
-    }
-
-    .trace-details-json {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.6rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--success);
-      white-space: pre-wrap;
-      overflow-x: auto;
-    }
-
-    /* Constraint & Planning Panel */
-    .plan-box {
-      background: rgba(99, 102, 241, 0.05);
-      border: 1px solid rgba(99, 102, 241, 0.2);
+      padding: 16px 20px;
       border-radius: 12px;
-      padding: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .agents-flow {
       display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 20px;
     }
-
-    .plan-goal {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #a5b4fc;
+    .agent-node {
+      background: #334155;
+      border: 2px solid #475569;
+      border-radius: 12px;
+      padding: 16px 20px;
+      min-width: 140px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      cursor: pointer;
     }
-
+    .agent-node:hover { transform: translateY(-4px); }
+    .agent-node.completed {
+      background: #064e3b;
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+    .agent-node.running {
+      background: #7c2d12;
+      border-color: #f97316;
+      animation: pulse 1.5s infinite;
+    }
+    .agent-node.failed {
+      background: #450a0a;
+      border-color: #ef4444;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+    }
+    .agent-icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .agent-name { font-weight: 600; font-size: 0.85rem; }
+    .agent-status { font-size: 0.7rem; opacity: 0.8; margin-top: 4px; }
+    
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1.2rem;
+    }
+    
+    /* Constraints */
+    .constraints {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid #334155;
+    }
     .constraint-item {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #0f172a;
+      border-radius: 8px;
+      border-left: 4px solid #ef4444;
     }
-
-    .constraint-checked {
-      color: var(--success);
+    .constraint-item.pass { border-left-color: #10b981; }
+    .constraint-icon { font-size: 1.2rem; }
+    .constraint-text { font-size: 0.9rem; }
+    
+    /* Timeline */
+    .timeline {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #334155;
     }
-
-    .timeline-bar {
+    .timeline h2 { margin-bottom: 16px; }
+    .timeline-controls {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      padding-left: 1rem;
-      border-left: 2px solid var(--border);
-      margin-left: 0.5rem;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
-
-    .timeline-node {
-      position: relative;
-    }
-
-    .timeline-node::before {
-      content: '';
-      position: absolute;
-      left: -21px;
-      top: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--primary);
-      border: 2px solid var(--bg);
-    }
-
-    .timeline-node.success::before {
-      background: var(--success);
-    }
-
-    /* File Drop Area */
-    .file-drop {
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.01);
-      transition: all 0.2s ease;
+      font-weight: 600;
+      transition: all 0.2s;
     }
-
-    .file-drop:hover {
-      border-color: var(--primary);
-      background: rgba(99, 102, 241, 0.02);
+    button:hover { background: #2563eb; transform: scale(1.05); }
+    button.secondary { background: #475569; }
+    button.secondary:hover { background: #334155; }
+    
+    .trace-entry {
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #0f172a;
+      border-radius: 8px;
+      border-left: 3px solid #3b82f6;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      opacity: 0;
+      animation: slideIn 0.3s forwards;
     }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .trace-time { color: #94a3b8; font-size: 0.7rem; }
+    .trace-agent { color: #60a5fa; font-weight: 600; }
+    .trace-action { color: #e2e8f0; }
+    
+    .fallback-box {
+      background: #450a0a;
+      border: 2px solid #ef4444;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .fallback-box h3 { color: #fca5a5; margin-bottom: 8px; }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #10b981;
+    }
+    .stat-label { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+    
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="logo-container">
-      <div class="logo-icon">
-        <i data-lucide="shield-alert"></i>
-      </div>
-      <div class="logo-text">
-        <h1>CIRO Trace Explorer</h1>
-        <p>Google Antigravity Architecture</p>
-      </div>
+  <div class="container">
+    <div class="header">
+      <h1>🧠 CIRO Antigravity Trace Explorer</h1>
+      <p>Interactive visualization of multi-agent crisis orchestration <span class="badge">LIVE TRACE</span></p>
     </div>
     
-    <div class="actions-bar">
-      <button class="btn" id="loadMockBtn">
-        <i data-lucide="database"></i> Load Sample Trace
-      </button>
-      <button class="btn btn-primary" id="refreshBtn">
-        <i data-lucide="refresh-cw"></i> Reload Live
-      </button>
+    <div class="stats" id="stats"></div>
+    
+    <div class="task-plan">
+      <h2>📋 Task Plan Execution</h2>
+      <div class="goal-box" id="goal">Loading...</div>
+      <div class="agents-flow" id="agents"></div>
+      <div id="constraints"></div>
     </div>
-  </header>
-
-  <main>
-    <!-- Left Column: Visual Flow & Plans -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      <!-- Active Orchestration Flowchart -->
-      <div class="card">
-        <div class="card-title">
-          <i data-lucide="network"></i> Goal-Oriented Orchestration Map
-        </div>
-        
-        <div class="flowchart-container">
-          <div class="flow-connection"></div>
-          <div class="flow-grid">
-            <div class="flow-node" data-agent="signal_ingestion" id="node-signal_ingestion">
-              <span class="node-icon">📡</span>
-              <span class="node-title">Ingestion</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="event_detection" id="node-event_detection">
-              <span class="node-icon">🔍</span>
-              <span class="node-title">Detection</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="reasoning" id="node-reasoning">
-              <span class="node-icon">🧠</span>
-              <span class="node-title">Reasoning</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="action_planning" id="node-action_planning">
-              <span class="node-icon">📋</span>
-              <span class="node-title">Planning</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="simulation" id="node-simulation">
-              <span class="node-icon">🔮</span>
-              <span class="node-title">Simulation</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="dispatch" id="node-dispatch">
-              <span class="node-icon">🚀</span>
-              <span class="node-title">Dispatch</span>
-              <span class="node-status">Ready</span>
-            </div>
-            <div class="flow-node" data-agent="visualization" id="node-visualization">
-              <span class="node-icon">🗺️</span>
-              <span class="node-title">Visuals</span>
-              <span class="node-status">Ready</span>
-            </div>
-          </div>
-        </div>
+    
+    <div class="timeline">
+      <h2>⏱️ Execution Timeline</h2>
+      <div class="timeline-controls">
+        <button onclick="playTrace()">▶️ Play Execution</button>
+        <button class="secondary" onclick="pauseTrace()">⏸️ Pause</button>
+        <button class="secondary" onclick="resetTrace()">🔄 Reset</button>
+        <button class="secondary" onclick="showOnlyFailures()">⚠️ Failures Only</button>
       </div>
-
-      <!-- Antigravity Task Plan & Constraints -->
-      <div class="card">
-        <div class="card-title">
-          <i data-lucide="check-square"></i> Constraints & Objectives Monitor
-        </div>
-        
-        <div class="plan-box" id="taskPlanBox">
-          <div style="text-align: center; color: var(--text-muted); padding: 1rem;">
-            Trigger a workflow or load traces to visualize task goals.
-          </div>
-        </div>
-      </div>
+      <div id="trace-container"></div>
     </div>
-
-    <!-- Right Column: Raw Logs Explorer -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      <div class="card">
-        <div class="card-title" style="justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <i data-lucide="terminal"></i> Activity Log
-          </div>
-          <span style="font-size: 0.75rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; padding: 0.2rem 0.5rem; border-radius: 4px;" id="traceCount">
-            0 entries
-          </span>
-        </div>
-
-        <div class="file-drop" id="fileDropZone">
-          <i data-lucide="upload-cloud" style="margin: 0 auto 0.5rem; display: block; color: var(--primary);" size="32"></i>
-          <p style="font-weight: 600; font-size: 0.9rem;">Drag & drop sample_trace.json here</p>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Or click to select file from disk</p>
-          <input type="file" id="fileInput" style="display: none;" accept=".json">
-        </div>
-
-        <div class="trace-list" id="traceList">
-          <!-- Trace items will populate dynamically -->
-        </div>
-      </div>
+    
+    <div class="fallback-box hidden" id="fallback">
+      <h3>🚨 Fallback Triggered</h3>
+      <p id="fallback-text"></p>
     </div>
-  </main>
+  </div>
 
   <script>
-    // Initialize Lucide icons
-    lucide.createIcons();
-
-    // Dom elements
-    const loadMockBtn = document.getElementById('loadMockBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const fileDropZone = document.getElementById('fileDropZone');
-    const fileInput = document.getElementById('fileInput');
-    const traceList = document.getElementById('traceList');
-    const traceCount = document.getElementById('traceCount');
-    const taskPlanBox = document.getElementById('taskPlanBox');
-
-    // State
     let traces = [];
-
-    // Fallback sample trace data
-    const SAMPLE_DATA = [
-      {
-        "timestamp": new Date().toISOString(),
-        "event_type": "task_plan_generated",
-        "data": {
-          "goal": "Crisis response: full_cycle",
-          "steps": [
-            {"agent": "signal_ingestion", "task": "Ingest and normalize multi-source signals"},
-            {"agent": "event_detection", "task": "Spatial-temporal clustering of signals"},
-            {"agent": "reasoning", "task": "Assess severity and humanitarian impact"},
-            {"agent": "action_planning", "task": "Generate constrained resource allocation plan"},
-            {"agent": "simulation", "task": "Simulate action outcomes and side-effects"},
-            {"agent": "dispatch", "task": "Notify relevant authorities"},
-            {"agent": "visualization", "task": "Push dynamic updates to dashboard"}
-          ],
-          "constraints": [
-            "Total resources cannot exceed municipal inventory",
-            "Confidence threshold >= 0.6 for autonomous dispatch",
-            "Response time target < 15 minutes"
-          ],
-          "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-        }
-      },
-      {
-        "timestamp": new Date().toISOString(),
-        "event_type": "agent_action",
-        "data": {
-          "agent_id": "signal_ingestion",
-          "action": "process_complete",
-          "details": {
-            "social_count": 5,
-            "status": "success"
-          }
-        }
-      },
-      {
-        "timestamp": new Date().toISOString(),
-        "event_type": "agent_action",
-        "data": {
-          "agent_id": "event_detection",
-          "action": "anomalies_detected",
-          "details": {
-            "count": 1,
-            "status": "success"
-          }
-        }
-      },
-      {
-        "timestamp": new Date().toISOString(),
-        "event_type": "agent_action",
-        "data": {
-          "agent_id": "reasoning",
-          "action": "ethical_reasoning_complete",
-          "details": {
-            "crisis_detected": true,
-            "impact_score": 85.5,
-            "city": "Karachi"
-          }
-        }
-      }
-    ];
-
-    // Load initial live traces from backend if possible
-    async function loadLiveTraces() {
+    let taskPlan = null;
+    let currentIndex = 0;
+    let isPlaying = false;
+    let playInterval = null;
+    
+    async function loadTraces() {
       try {
-        const response = await fetch('./sample_trace.json');
-        if (response.ok) {
-          const data = await response.json();
-          renderTraces(data);
-        } else {
-          // Attempt absolute URL if running on dev port
-          const absoluteRes = await fetch('/antigravity_traces/sample_trace.json');
-          if (absoluteRes.ok) {
-            const data = await absoluteRes.json();
-            renderTraces(data);
-          }
-        }
-      } catch (err) {
-        console.warn("Could not load live traces. Click Load Sample Trace to load fallback dataset.");
+        const response = await fetch('sample_trace.json');
+        traces = await response.json();
+        renderStats();
+        extractTaskPlan();
+        renderAgents();
+        renderConstraints();
+      } catch (e) {
+        document.getElementById('goal').textContent = 'Error loading traces: ' + e.message;
       }
     }
-
-    function renderTraces(data) {
-      if (!Array.isArray(data)) return;
-      traces = data;
-      traceCount.textContent = `${traces.length} entries`;
+    
+    function renderStats() {
+      const agents = [...new Set(traces.filter(t => t.data?.agent_id).map(t => t.data.agent_id))];
+      const actions = traces.filter(t => t.event_type === 'agent_action').length;
+      const duration = traces.length > 0 ? 
+        Math.round((new Date(traces[traces.length-1].timestamp) - new Date(traces[0].timestamp)) / 1000) : 0;
       
-      // Clear
-      traceList.innerHTML = '';
-      
-      // Populate traces
-      traces.forEach(trace => {
-        const item = document.createElement('div');
-        item.className = 'trace-item';
-        
-        let agentTag = trace.event_type;
-        let actionName = '';
-        let detailsHtml = '';
-
-        if (trace.event_type === 'agent_action') {
-          agentTag = trace.data.agent_id;
-          actionName = trace.data.action;
-          detailsHtml = `<pre class="trace-details-json">${JSON.stringify(trace.data.details, null, 2)}</pre>`;
-          
-          // Set flow node active status dynamically
-          const node = document.getElementById(`node-${trace.data.agent_id}`);
-          if (node) {
-            node.className = 'flow-node active';
-            const statusLabel = node.querySelector('.node-status');
-            if (statusLabel) statusLabel.textContent = 'COMPLETED';
-          }
-        } else if (trace.event_type === 'task_plan_generated') {
-          agentTag = 'Orchestrator';
-          actionName = 'Goal Plan Initiated';
-          detailsHtml = `<pre class="trace-details-json">${JSON.stringify(trace.data, null, 2)}</pre>`;
-          
-          // Render constraints Checklist
-          renderConstraintsBox(trace.data);
-        } else {
-          actionName = trace.event_type;
-          detailsHtml = `<pre class="trace-details-json">${JSON.stringify(trace.data, null, 2)}</pre>`;
-        }
-
-        item.innerHTML = `
-          <div class="trace-meta">
-            <span class="trace-agent-tag">${agentTag}</span>
-            <span>${new Date(trace.timestamp).toLocaleTimeString()}</span>
-          </div>
-          <div class="trace-action-name">${actionName}</div>
-          ${detailsHtml}
-        `;
-        traceList.appendChild(item);
-      });
-    }
-
-    function renderConstraintsBox(plan) {
-      taskPlanBox.innerHTML = `
-        <div class="plan-goal">🎯 Goal: ${plan.goal}</div>
-        <div style="font-size: 0.85rem; font-weight: 700; color: white; margin-top: 0.5rem;">Antigravity System Constraints Checked:</div>
-        <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.25rem;">
-          ${plan.constraints.map(c => `
-            <div class="constraint-item">
-              <span class="constraint-checked">✓</span>
-              <span>${c}</span>
-            </div>
-          `).join('')}
-        </div>
-        <div style="font-size: 0.8rem; color: var(--warning); font-style: italic; margin-top: 0.5rem;">
-          Fallback Directive: ${plan.fallback}
-        </div>
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><div class="stat-value">${agents.length}</div><div class="stat-label">Active Agents</div></div>
+        <div class="stat-card"><div class="stat-value">${actions}</div><div class="stat-label">Actions Executed</div></div>
+        <div class="stat-card"><div class="stat-value">${duration}s</div><div class="stat-label">Execution Time</div></div>
+        <div class="stat-card"><div class="stat-value">${traces.length}</div><div class="stat-label">Trace Events</div></div>
       `;
     }
-
-    // Event listeners
-    loadMockBtn.addEventListener('click', () => {
-      renderTraces(SAMPLE_DATA);
-    });
-
-    refreshBtn.addEventListener('click', () => {
-      loadLiveTraces();
-    });
-
-    // File Drag/Drop
-    fileDropZone.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            const data = JSON.parse(event.target.result);
-            renderTraces(data);
-          } catch (err) {
-            alert("Invalid JSON trace format.");
-          }
-        };
-        reader.readAsText(file);
+    
+    function extractTaskPlan() {
+      const planTrace = traces.find(t => t.event_type === 'task_plan_generated');
+      if (planTrace) {
+        taskPlan = planTrace.data;
+        document.getElementById('goal').textContent = '🎯 ' + taskPlan.goal;
       }
-    });
-
-    fileDropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      fileDropZone.style.borderColor = 'var(--primary)';
-    });
-
-    fileDropZone.addEventListener('dragleave', () => {
-      fileDropZone.style.borderColor = 'var(--border)';
-    });
-
-    fileDropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      fileDropZone.style.borderColor = 'var(--border)';
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            const data = JSON.parse(event.target.result);
-            renderTraces(data);
-          } catch (err) {
-            alert("Invalid JSON trace format.");
-          }
-        };
-        reader.readAsText(file);
+    }
+    
+    function renderAgents() {
+      if (!taskPlan) return;
+      const container = document.getElementById('agents');
+      const icons = {
+        'signal_ingestion': '📡', 'event_detection': '🔍', 'reasoning': '🧠',
+        'action_planning': '📋', 'simulation': '⚙️', 'dispatch': '📢',
+        'visualization': '📊'
+      };
+      
+      container.innerHTML = taskPlan.steps.map((step, i) => `
+        <div class="agent-node" id="agent-${step.agent}" onclick="highlightAgent('${step.agent}')">
+          <div class="agent-icon">${icons[step.agent] || '🤖'}</div>
+          <div class="agent-name">${step.agent.replace('_', ' ')}</div>
+          <div class="agent-status" id="status-${step.agent}">pending</div>
+        </div>
+        ${i < taskPlan.steps.length - 1 ? '<div class="arrow">→</div>' : ''}
+      `).join('');
+    }
+    
+    function renderConstraints() {
+      if (!taskPlan) return;
+      document.getElementById('constraints').innerHTML = `
+        <h3 style="margin: 16px 0 12px;">🔗 Constraints</h3>
+        ${taskPlan.constraints.map(c => `
+          <div class="constraint-item" id="constraint-${c.replace(/\s/g, '')}">
+            <span class="constraint-icon">🔒</span>
+            <span class="constraint-text">${c}</span>
+          </div>
+        `).join('')}
+      `;
+    }
+    
+    function playTrace() {
+      if (isPlaying) return;
+      isPlaying = true;
+      resetTrace();
+      
+      playInterval = setInterval(() => {
+        if (currentIndex >= traces.length) {
+          pauseTrace();
+          return;
+        }
+        renderTraceEntry(traces[currentIndex]);
+        updateAgentStatus(traces[currentIndex]);
+        currentIndex++;
+      }, 200);
+    }
+    
+    function pauseTrace() {
+      isPlaying = false;
+      clearInterval(playInterval);
+    }
+    
+    function resetTrace() {
+      pauseTrace();
+      currentIndex = 0;
+      document.getElementById('trace-container').innerHTML = '';
+      document.querySelectorAll('.agent-node').forEach(n => {
+        n.className = 'agent-node';
+        n.querySelector('.agent-status').textContent = 'pending';
+      });
+      document.querySelectorAll('.constraint-item').forEach(c => c.classList.remove('pass'));
+      document.getElementById('fallback').classList.add('hidden');
+    }
+    
+    function renderTraceEntry(trace) {
+      const div = document.createElement('div');
+      div.className = 'trace-entry';
+      const time = new Date(trace.timestamp).toLocaleTimeString();
+      
+      if (trace.event_type === 'agent_action') {
+        div.innerHTML = `
+          <span class="trace-time">[${time}]</span>
+          <span class="trace-agent">${trace.data.agent_id}</span>
+          <span class="trace-action"> → ${trace.data.action}</span>
+          ${trace.data.details?.status ? `<span style="color: #10b981;"> (${trace.data.details.status})</span>` : ''}
+        `;
+      } else if (trace.event_type === 'task_plan_generated') {
+        div.style.borderLeftColor = '#f59e0b';
+        div.innerHTML = `<span class="trace-time">[${time}]</span> 📋 Task plan generated with ${trace.data.steps.length} steps`;
+      } else {
+        div.innerHTML = `<span class="trace-time">[${time}]</span> ${trace.event_type}`;
       }
-    });
-
-    // Initial load
-    loadLiveTraces();
+      
+      const container = document.getElementById('trace-container');
+      container.insertBefore(div, container.firstChild);
+    }
+    
+    function updateAgentStatus(trace) {
+      if (trace.event_type === 'agent_action' && trace.data.agent_id) {
+        const agentEl = document.getElementById(`agent-${trace.data.agent_id}`);
+        const statusEl = document.getElementById(`status-${trace.data.agent_id}`);
+        if (agentEl && statusEl) {
+          if (trace.data.action === 'initialize') {
+            agentEl.classList.add('running');
+            statusEl.textContent = 'initializing...';
+          } else if (trace.data.details?.status === 'ready') {
+            agentEl.classList.remove('running');
+            agentEl.classList.add('completed');
+            statusEl.textContent = 'ready ✅';
+          } else {
+            agentEl.classList.add('completed');
+            statusEl.textContent = 'executed ✅';
+          }
+        }
+      }
+    }
+    
+    function highlightAgent(agentId) {
+      document.querySelectorAll('.trace-entry').forEach(el => el.style.opacity = '0.3');
+      document.querySelectorAll('.trace-entry').forEach(el => {
+        if (el.textContent.includes(agentId)) el.style.opacity = '1';
+      });
+    }
+    
+    function showOnlyFailures() {
+      document.querySelectorAll('.trace-entry').forEach(el => {
+        if (el.textContent.includes('error') || el.textContent.includes('failed')) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    }
+    
+    loadTraces();
   </script>
 </body>
 </html>

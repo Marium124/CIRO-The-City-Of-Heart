@@ -41,6 +41,61 @@ Antigravity defines the task plan, manages agent handoffs, and logs reasoning tr
 
 ---
 
+## 🔬 Engineering Tradeoffs & Architecture Decisions
+
+We made several unconventional choices that deserve explanation for technical reviewers.
+
+### Why SQLite Instead of PostgreSQL?
+**Short answer:** Zero-infrastructure reproducibility for hackathon judges.
+**Long answer:** We intentionally stayed with SQLite for the demo because it requires 
+zero DevOps, zero Docker setup, and allows judges to clone → install → run in under 
+60 seconds. Our database abstraction layer (`database/db_setup.py`) uses SQLAlchemy 
+ORM with session factories. Migrating to PostgreSQL with connection pooling is a 
+2-line configuration change (`SQLALCHEMY_DATABASE_URI` in `.env`). We optimized for 
+**demo accessibility** over **production scale** because hackathon judging is about 
+provability, not infrastructure.
+
+### Why Hand-Rolled Antigravity Traces Instead of the SDK?
+**Short answer:** Auditability for emergency operators.
+**Long answer:** The official Antigravity SDK abstracts agent reasoning into a black 
+box. For a crisis response system where operators may face legal review, every agent 
+decision must be inspectable, replayable, and explainable. Our open trace format 
+(`antigravity_traces/sample_trace.json`) and the interactive Trace Explorer 
+(`antigravity_traces/explorer.html`) provide observability that SDK logs do not. 
+We implemented the *conceptual pattern* of Antigravity (goal-oriented task plans, 
+constraint checking, fallback triggers, execution traces) rather than the proprietary 
+SDK integration.
+
+### Why Deterministic Hash-Based Simulation?
+**Short answer:** Reproducible crisis modeling for comparison and regression testing.
+**Long answer:** We replaced Python's `random` module with SHA-256 seeded generators. 
+This means the same crisis inputs (location, type, severity) always produce the same 
+simulation outputs (ETA, affected users, damage level). This allows us to:
+- Regression-test simulation logic across code changes
+- Compare resource allocation strategies against identical crisis scenarios
+- Provide deterministic demos where judges can verify outputs match inputs
+
+### How We Prove Robustness
+We do not claim robustness through architecture diagrams. We prove it empirically 
+through chaos engineering. Run `python3 chaos_demo.py` and the system will:
+1. Spawn 30 concurrent crises across Pakistan
+2. Delete its own database file mid-execution
+3. Exhaust its entire resource pool
+4. Inject malformed inputs (empty locations, invalid severities, emoji strings)
+...and measure exactly how many operations survive. The output is a JSON Resilience 
+Score that quantifies graceful degradation.
+
+### Why the Web Dashboard Is a Single File
+**Honest answer:** Time allocation. The hackathon scoring weights are: Crisis Detection 
+(25%), Resource Optimization (20%), Antigravity Integration (20%), Impact Simulation 
+(15%). The web dashboard falls under Innovation/UX (10%). We chose to make the mobile 
+app fully functional (6 screens, navigation, real reporting) and keep the dashboard 
+as a rapid prototype rather than splitting effort evenly and delivering two mediocre 
+interfaces. The dashboard uses React with real-time WebSocket updates — it works, but 
+it is not componentized.
+
+---
+
 ## 📡 Data Stream Schemas
 
 When a signal is ingested, it is fused across three distinct real-time channels:
