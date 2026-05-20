@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }: any) {
                 coordinates: { lat: 24.8607, lng: 67.0011 }
               });
               Alert.alert('✅ SOS SENT', 'Authorities have been dispatched. Help is on the way!');
-              navigation.navigate('Dispatch');
+              navigation.navigate('Crises');
             } catch (error) {
               Alert.alert('Error', 'Could not send SOS. Check connection.');
             } finally {
