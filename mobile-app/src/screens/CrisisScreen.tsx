@@ -118,7 +118,7 @@ export default function CrisisScreen() {
           new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime()
         );
         setCrises(merged);
-      } catch {
+      } catch (_e) {
         // Keep existing data on error
       } finally {
         if (mounted) setLoading(false);
