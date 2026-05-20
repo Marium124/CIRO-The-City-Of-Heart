@@ -1,297 +1,5 @@
 [
   {
-    "timestamp": "2026-05-20T15:13:15.256529",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "weather_processed",
-      "details": {
-        "location": "G-10",
-        "alert": "critical"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.258293",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "traffic_processed",
-      "details": {
-        "location": "G-10",
-        "congestion": "severe"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.260265",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 1,
-        "weather_count": 1,
-        "traffic_count": 1
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.262636",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "receive_message",
-      "details": {
-        "sender": "signal_ingestion",
-        "type": "new_signals"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.264361",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "send_message",
-      "details": {
-        "receiver": "event_detection",
-        "type": "new_signals"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.266214",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 3
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.270087",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "cluster_detected",
-      "details": {
-        "location": "G-10",
-        "count": 2,
-        "urgency": "low"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.272124",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 2
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.274122",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "event_synthesized",
-      "details": {
-        "event_id": "EVT-20260520151315-0",
-        "type": "urban_flooding",
-        "confidence": 0.99
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.276245",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 1,
-        "anomalies_found": 2,
-        "events_detected": 1
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.278202",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "receive_message",
-      "details": {
-        "sender": "event_detection",
-        "type": "events_detected"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.280348",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "send_message",
-      "details": {
-        "receiver": "reasoning",
-        "type": "events_detected"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.282657",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 1
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.284628",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "ethical_reasoning_complete",
-      "details": {
-        "crisis_detected": false,
-        "impact_score": 2.4,
-        "city": "Islamabad"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.376773",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.378558",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.380081",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.381580",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "social_media_processed",
-      "details": {
-        "location": "G-10",
-        "urgency": "low"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.382978",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "weather_processed",
-      "details": {
-        "location": "G-10",
-        "alert": "critical"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.384416",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "traffic_processed",
-      "details": {
-        "location": "G-10",
-        "congestion": "severe"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.385806",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 1,
-        "weather_count": 1,
-        "traffic_count": 1
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T15:13:15.387273",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "receive_message",
-      "details": {
-        "sender": "signal_ingestion",
-        "type": "new_signals"
-      }
-    }
-  },
-  {
     "timestamp": "2026-05-20T15:13:15.389065",
     "event_type": "agent_action",
     "data": {
@@ -651,6 +359,297 @@
       "details": {
         "crisis_detected": false,
         "impact_score": 2.4,
+        "city": "Islamabad"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.938602",
+    "event_type": "task_plan_generated",
+    "data": {
+      "goal": "Crisis response: full_cycle",
+      "steps": [
+        {
+          "agent": "signal_ingestion",
+          "task": "Ingest and normalize multi-source signals"
+        },
+        {
+          "agent": "event_detection",
+          "task": "Spatial-temporal clustering of signals"
+        },
+        {
+          "agent": "reasoning",
+          "task": "Assess severity and humanitarian impact"
+        },
+        {
+          "agent": "action_planning",
+          "task": "Generate constrained resource allocation plan"
+        },
+        {
+          "agent": "simulation",
+          "task": "Simulate action outcomes and side-effects"
+        },
+        {
+          "agent": "dispatch",
+          "task": "Notify relevant authorities"
+        },
+        {
+          "agent": "visualization",
+          "task": "Push dynamic updates to dashboard"
+        }
+      ],
+      "constraints": [
+        "Total resources cannot exceed municipal inventory",
+        "Confidence threshold >= 0.6 for autonomous dispatch",
+        "Response time target < 15 minutes"
+      ],
+      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.942322",
+    "event_type": "workflow_execution_started",
+    "data": {
+      "workflow": "full_cycle"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.944045",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process",
+      "details": {
+        "input_type": "unknown"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.945887",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "G-10",
+        "urgency": "low"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.947551",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "G-10",
+        "urgency": "high"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.949487",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "G-10",
+        "urgency": "high"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.951786",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "G-10",
+        "urgency": "low"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.953687",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "G-10",
+        "urgency": "low"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.956122",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "weather_processed",
+      "details": {
+        "location": "G-10",
+        "alert": "critical"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.958160",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "traffic_processed",
+      "details": {
+        "location": "G-10",
+        "congestion": "critical"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.960035",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process_complete",
+      "details": {
+        "social_count": 5,
+        "weather_count": 1,
+        "traffic_count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.961826",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "receive_message",
+      "details": {
+        "sender": "signal_ingestion",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.963811",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "send_message",
+      "details": {
+        "receiver": "event_detection",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.965580",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process",
+      "details": {
+        "total_signals": 7
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.968907",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "cluster_detected",
+      "details": {
+        "location": "G-10",
+        "count": 6,
+        "urgency": "medium"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.970672",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "anomalies_detected",
+      "details": {
+        "count": 3
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.973132",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "event_synthesized",
+      "details": {
+        "event_id": "EVT-20260520152244-0",
+        "type": "urban_flooding",
+        "confidence": 0.99
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.974787",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process_complete",
+      "details": {
+        "clusters_found": 1,
+        "anomalies_found": 3,
+        "events_detected": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.976595",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "receive_message",
+      "details": {
+        "sender": "event_detection",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.978052",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "send_message",
+      "details": {
+        "receiver": "reasoning",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.979653",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "process",
+      "details": {
+        "events_count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:22:44.982049",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "ethical_reasoning_complete",
+      "details": {
+        "crisis_detected": false,
+        "impact_score": 6.0,
         "city": "Islamabad"
       }
     }

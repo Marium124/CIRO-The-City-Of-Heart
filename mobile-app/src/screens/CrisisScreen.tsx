@@ -101,33 +101,30 @@ export default function CrisisScreen() {
   const [loading, setLoading] = useState(true);
   const [selectedCrisis, setSelectedCrisis] = useState<Crisis | null>(null);
 
+  const fetchCrises = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/crises/active`);
+      const fetchedCrises = response.data.crises || [];
+      
+      // Merge real backend crises on top of demo data
+      const realIds = new Set(fetchedCrises.map((c: Crisis) => c.crisis_id));
+      const demoFiltered = DEMO_CRISES.filter(d => !realIds.has(d.crisis_id));
+      const merged = [...fetchedCrises, ...demoFiltered];
+      merged.sort((a: Crisis, b: Crisis) =>
+        new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime()
+      );
+      setCrises(merged);
+    } catch (_e) {
+      // Keep existing data on error
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let mounted = true;
-
-    const fetchCrises = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/crises/active`);
-        const fetchedCrises = response.data.crises || [];
-        if (!mounted) return;
-        
-        // Merge real backend crises on top of demo data
-        const realIds = new Set(fetchedCrises.map((c: Crisis) => c.crisis_id));
-        const demoFiltered = DEMO_CRISES.filter(d => !realIds.has(d.crisis_id));
-        const merged = [...fetchedCrises, ...demoFiltered];
-        merged.sort((a: Crisis, b: Crisis) =>
-          new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime()
-        );
-        setCrises(merged);
-      } catch (_e) {
-        // Keep existing data on error
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
-
     fetchCrises();
     const interval = setInterval(fetchCrises, 10000);
-    return () => { mounted = false; clearInterval(interval); };
+    return () => clearInterval(interval);
   }, []);
 
   const getSeverityColor = (severity: string) => {
