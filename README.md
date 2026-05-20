@@ -163,25 +163,31 @@ The higher-priority sector secures primary asset allocation. The lower-urgency e
 
 | Metric Channel               | Traditional Emergency Dispatch            | CIRO Agentic Coordination                    |
 | ---------------------------- | ----------------------------------------- | -------------------------------------------- |
-| **Average Dispatch Latency** | ~45 Minutes¹                              | **~12 Seconds (Autonomous)**                 |
+| **Pipeline Processing Time** | ~45 Minutes (human triage + manual dispatch)¹ | **~4–8 Seconds (end-to-end pipeline time)**² |
 | **Resource Efficiency**      | Static / Fixed (First come, first served) | Urgency Knapsack Optimization                |
-| **Prank Mitigation**         | High vehicle waste due to fake calls      | Zero waste (60% Confidence threshold checks) |
+| **False Alarm Handling**     | High vehicle waste due to unverified calls | Confidence-gated dispatch (≥60% threshold required before any resource allocation)³ |
 
-¹ _Based on published average emergency response times in Pakistan (source: Rescue 1122 annual report) vs. CIRO’s measured internal latency._
+¹ _Based on published average emergency response times in Pakistan (source: Rescue 1122 annual report). This measures the full human workflow from call receipt to vehicle dispatch, not just software processing._
+
+² _Measured as internal pipeline execution time from signal ingestion to dispatch command generation on local hardware. This does NOT include real-world vehicle travel time, network latency to emergency services, or human confirmation steps that a production system would require._
+
+³ _The ReasoningAgent applies a confidence threshold: if multi-source sensor fusion (social media + weather + traffic) yields confidence below 60%, the pipeline halts before resource allocation. This reduces — but does not eliminate — false dispatches. It is a single gating check, not a comprehensive fraud detection system._
 
 ---
 
 ## 💰 Operational Cost & Scalability Analysis
 
-### Pipeline Cost Breakdown
+### Pipeline Cost Breakdown (Theoretical Projections)
 
-| Service Layer           | Infrastructure Mechanism                | Estimated Unit Cost |
-| ----------------------- | --------------------------------------- | ------------------- |
-| **Ingestion**           | FastAPI Request Handler                 | $0.0001             |
-| **Agent Orchestration** | Asynchronous Python Worker Queue        | $0.0000             |
-| **Agentic Reasoning**   | LLM Inference (Token Input/Output)      | $0.0150             |
-| **SMS Dispatch**        | Twilio Carrier Gateway API              | $0.0075             |
-| **Total Pipeline Cost** | **Fully Autonomous Emergency Dispatch** | **~$0.0226**        |
+_The following are **estimated per-invocation costs** based on published pricing of each service at the time of writing. These are not measured production costs — CIRO is a prototype and has not been deployed at scale._
+
+| Service Layer           | Infrastructure Mechanism                | Est. Cost per Call | Pricing Source |
+| ----------------------- | --------------------------------------- | ------------------ | -------------- |
+| **Ingestion**           | FastAPI Request Handler (Cloud Run)     | ~$0.0001           | GCP Cloud Run pricing (per request + CPU-seconds) |
+| **Agent Orchestration** | Asynchronous Python Worker Queue        | ~$0.0000           | In-process, no external service |
+| **Agentic Reasoning**   | Gemini 2.0 Flash (est. ~500 tokens I/O) | ~$0.0150           | Google AI Studio published token rates |
+| **SMS Dispatch**        | Twilio Programmable SMS (Pakistan)      | ~$0.0075           | Twilio international SMS pricing page |
+| **Total Pipeline Cost** | **Theoretical per-crisis estimate**     | **~$0.023**        | Sum of above estimates |
 
 ### Scaling to 100x Load
 
