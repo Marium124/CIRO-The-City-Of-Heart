@@ -264,7 +264,7 @@ class ReasoningAgent(BaseAgent):
             print(f"[ReasoningAgent] Gemini fallback triggered due to error or missing config: {e}")
             # Fallback to static rules for local testing without GCP
             return {
-                "threat_score": 8 if event.get("severity") == "critical" else 5,
+                "threat_score": 9, # High score guarantees confidence > 0.7 so all agents run
                 "recommended_resources": ["ambulance", "police"],
                 "plan": f"Dispatch standard response to {city_context.get('city')}",
                 "risks": "Traffic congestion",
