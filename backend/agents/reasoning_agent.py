@@ -15,20 +15,22 @@ class ReasoningAgent(BaseAgent):
     def __init__(self, agent_id: str, agent_manager):
         super().__init__(agent_id, agent_manager)
         self.reasoning_rules = self._load_reasoning_rules()
-        self.engine = self._load_engine_config()
+        self._config = self._load_config()
+        self.engine = self._config.get("REASONING_ENGINE", "AGENT_BASED")
+        self.scenario = self._config.get("SCENARIO", "golden")
         
-    def _load_engine_config(self) -> str:
+    def _load_config(self) -> dict:
+        """Load the full config.json from backend/ directory"""
         import json
         import os
         config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
         if os.path.exists(config_path):
             try:
                 with open(config_path, "r") as f:
-                    config_data = json.load(f)
-                    return config_data.get("REASONING_ENGINE", "AGENT_BASED")
+                    return json.load(f)
             except Exception:
                 pass
-        return "AGENT_BASED"
+        return {}
         
     async def setup_tools(self):
         """Setup reasoning and inference tools"""
@@ -262,14 +264,25 @@ class ReasoningAgent(BaseAgent):
                 raise Exception("GCP_PROJECT_ID not set")
         except Exception as e:
             print(f"[ReasoningAgent] Gemini fallback triggered due to error or missing config: {e}")
-            # Fallback to static rules for local testing without GCP
+            # Threat score driven by SCENARIO in backend/config.json:
+            #   "golden"      -> threat_score=9  -> confidence=0.9 -> crisis_detected=True  -> all 7 agents
+            #   "false_alarm"  -> threat_score=3  -> confidence=0.3 -> crisis_detected=False -> stops at agent 3
+            #   "" (empty)     -> auto-detect from event severity
+            if self.scenario == "false_alarm":
+                threat_score = 3
+            elif self.scenario == "golden":
+                threat_score = 9
+            else:
+                # Auto-detect: use event severity to determine threat score
+                threat_score = 3 if event.get("severity") == "low" else 9
+            print(f"[ReasoningAgent] Scenario='{self.scenario}' -> threat_score={threat_score}")
             return {
-                "threat_score": 9, # High score guarantees confidence > 0.7 so all agents run
+                "threat_score": threat_score,
                 "recommended_resources": ["ambulance", "police"],
                 "plan": f"Dispatch standard response to {city_context.get('city')}",
                 "risks": "Traffic congestion",
                 "fallback": "Air support",
-                "reasoning": "Standard static fallback applied."
+                "reasoning": f"Static fallback applied (scenario: {self.scenario or 'auto-detect'})."
             }
 
     def _apply_reasoning_rules(self, event: Dict, events_data: Dict, rules: Dict, base_confidence: float) -> float:

@@ -281,7 +281,7 @@ class EventDetectionAgent(BaseAgent):
             return "critical"
         elif urgency == "high" or signal_count >= 3:
             return "high"
-        elif urgency == "medium" or signal_count >= 2:
+        elif urgency == "medium" or (urgency == "low" and signal_count >= 3):
             return "medium"
         return "low"
         

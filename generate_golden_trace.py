@@ -44,29 +44,9 @@ async def generate_golden_trace():
     if result.get("status") == "completed" and result["final_result"].get("crisis_detected") == True:
         print("Success! All 7 agents executed.")
         
-        # 4. Read the generated sample_trace.json (which has the correct event_type formatting)
-        trace_path = "antigravity_traces/sample_trace.json"
-        
-        with open(trace_path, "r") as f:
-            traces = json.load(f)
-            
-        print(f"Read {len(traces)} trace events from {trace_path}")
-        
-        # 5. Re-embed into HTML
-        print("Re-embedding into explorer.html...")
-        mini_trace = json.dumps(traces, separators=(',', ':'))
-        html_path = "antigravity_traces/explorer.html"
-        
-        with open(html_path, "r") as f:
-            html = f.read()
-            
-        import re
-        # Find the TRACE_DATA array and replace it
-        new_html = re.sub(r'const TRACE_DATA = \[.*?\];', f'const TRACE_DATA = {mini_trace};', html)
-        
-        with open(html_path, "w") as f:
-            f.write(new_html)
-            
+        # 4. Use embed_traces to re-embed all scenarios
+        import embed_traces
+        embed_traces.main()
         print("Done. explorer.html is now ready for judges.")
     else:
         print("Failed to generate golden trace. Result:", json.dumps(result, indent=2))

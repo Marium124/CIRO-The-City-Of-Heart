@@ -72,8 +72,15 @@ class LocationUtils:
         if (not city or city.lower() == "unknown" or city == "Unknown Location") and lat and lng:
             city = LocationUtils.get_city_from_coords(lat, lng)
             
-        # If city is a specific area (like G-10), try to map it to the parent city for vulnerability data
-        if city in ["G-10", "G-11", "G-8", "G-7", "G-6", "G-5", "F-10", "F-11", "F-8", "F-7", "F-6", "F-5", "Rawalpindi"]:
+        # Map specific neighborhood names to parent cities for proper vulnerability profiling
+        matched_city = None
+        for known_city in LocationUtils.PROVINCIAL_DATA.keys():
+            if known_city.lower() in city.lower():
+                matched_city = known_city
+                break
+        if matched_city:
+            city = matched_city
+        elif city in ["G-10", "G-11", "G-8", "G-7", "G-6", "G-5", "F-10", "F-11", "F-8", "F-7", "F-6", "F-5", "Rawalpindi"]:
             city = "Islamabad"
             
         # Default to a general profile if city not found
@@ -82,7 +89,7 @@ class LocationUtils:
             "population_density": "medium",
             "medical_infrastructure": "standard",
             "vulnerable_hotspots": []
-        })
+        }).copy() # Return a copy so we don't modify the class attribute
         
         profile["city"] = city
         return profile

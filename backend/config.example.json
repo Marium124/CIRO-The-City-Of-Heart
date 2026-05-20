@@ -1,0 +1,6 @@
+{
+  "REASONING_ENGINE": "AGENT_BASED",
+  "SCENARIO": "false_alarm",
+  "NOTES_REASONING_ENGINE": "Change REASONING_ENGINE to 'STATIC' to use the legacy if-else rule engine, or 'AGENT_BASED' to use the Gemini PDCA loop.",
+  "NOTES_SCENARIO": "Change SCENARIO to 'golden' for full 7-agent crisis pipeline, or 'false_alarm' to stop at the 3rd agent (Reasoning) due to low confidence."
+}
