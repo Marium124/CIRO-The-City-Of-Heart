@@ -164,31 +164,86 @@ async def ingest_signals(request: Request, signals: SignalInput):
 
 @router.post("/")
 async def submit_single_signal(request: Request, signal: Dict[str, Any]):
-    """Submit a single signal and trigger full cycle workflow"""
-    manager = request.app.state.agent_manager
+    """Submit a single signal (typically from mobile SOS) and trigger full cycle workflow.
     
-    # Wrap in expected format for ingestion agent
+    Converts the signal into the multi-source format expected by the agent pipeline,
+    including synthetic weather/traffic telemetry fusion for single-citizen reports.
+    """
+    from database.db_setup import SessionLocal, Signal as SignalModel
+    
+    manager = request.app.state.agent_manager
+    db = SessionLocal()
+    
+    # Extract signal fields
+    content = signal.get("content", signal.get("text", "Emergency reported"))
+    location = signal.get("location", "Karachi")
+    source = signal.get("source", "mobile_sos_button")
+    
+    # Build proper multi-source payload matching /ingest format
     signals_data = {
-        "social_media": [],
+        "social_media": [{"platform": source, "text": content, "location": location}],
         "weather": [],
         "traffic": []
     }
     
-    # Simple heuristic to categorize
-    source = signal.get("source", "social_media")
-    if source == "weather":
-        signals_data["weather"].append(signal)
-    elif source == "traffic":
-        signals_data["traffic"].append(signal)
+    # Synthesize sensor telemetry from SOS keywords (same logic as /ingest)
+    if any(kw in content.lower() for kw in ["flood", "rain", "water", "pani", "storm", "drowning"]):
+        signals_data["weather"].append({
+            "location": location, "temperature": 24.5, "rainfall": 82.5,
+            "condition": "Heavy Thunderstorm"
+        })
+        signals_data["traffic"].append({
+            "location": location, "congestion_level": "heavy",
+            "congestion_percentage": 92, "average_speed": 4.5, "incident_reported": True
+        })
+    elif any(kw in content.lower() for kw in ["fire", "blaze", "smoke", "burn"]):
+        signals_data["weather"].append({
+            "location": location, "temperature": 38.0, "rainfall": 0.0,
+            "condition": "Smoke Alert"
+        })
+        signals_data["traffic"].append({
+            "location": location, "congestion_level": "critical",
+            "congestion_percentage": 88, "average_speed": 6.0, "incident_reported": True
+        })
+    elif any(kw in content.lower() for kw in ["heat", "hot", "garmi", "exhaustion", "heatstroke"]):
+        signals_data["weather"].append({
+            "location": location, "temperature": 45.8, "rainfall": 0.0,
+            "condition": "Extreme Heatwave"
+        })
+        signals_data["traffic"].append({
+            "location": location, "congestion_level": "moderate",
+            "congestion_percentage": 55, "average_speed": 35.0, "incident_reported": False
+        })
     else:
-        signals_data["social_media"].append(signal)
-        
-    # Trigger workflow
+        # Generic emergency
+        signals_data["weather"].append({
+            "location": location, "temperature": 28.0, "rainfall": 0.0,
+            "condition": "Clear Sky"
+        })
+        signals_data["traffic"].append({
+            "location": location, "congestion_level": "critical",
+            "congestion_percentage": 85, "average_speed": 8.0, "incident_reported": True
+        })
+    
+    # Persist signal to DB
+    try:
+        db.add(SignalModel(
+            source=source, source_type="mobile_sos",
+            location=location, content=content,
+            timestamp=datetime.now()
+        ))
+        db.commit()
+    finally:
+        db.close()
+    
+    # Trigger full pipeline in background
     asyncio.create_task(manager.execute_workflow("full_cycle", signals_data))
     
     return {
         "status": "received",
-        "message": f"Signal from {source} queued for processing"
+        "source": source,
+        "location": location,
+        "message": f"SOS signal received. Agent pipeline triggered for {location}."
     }
 
 @router.get("/recent")
