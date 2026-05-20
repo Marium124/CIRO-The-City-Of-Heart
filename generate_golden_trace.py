@@ -18,6 +18,10 @@ async def generate_golden_trace():
     
     # 2. Clear any existing traces
     manager.global_trace = []
+    trace_path = "antigravity_traces/sample_trace.json"
+    if os.path.exists(trace_path):
+        os.remove(trace_path)
+    os.environ["CIRO_TRACE_FILE"] = "sample_trace.json"
     
     # 3. Inject a highly-correlated, high-severity signal to guarantee all 7 agents run
     perfect_signal = {
@@ -40,18 +44,17 @@ async def generate_golden_trace():
     if result.get("status") == "completed" and result["final_result"].get("crisis_detected") == True:
         print("Success! All 7 agents executed.")
         
-        # 4. Save to sample_trace.json
-        traces = manager.get_agent_traces()
+        # 4. Read the generated sample_trace.json (which has the correct event_type formatting)
         trace_path = "antigravity_traces/sample_trace.json"
         
-        with open(trace_path, "w") as f:
-            json.dump(traces, f, indent=2, default=str)
+        with open(trace_path, "r") as f:
+            traces = json.load(f)
             
-        print(f"Saved {len(traces)} trace events to {trace_path}")
+        print(f"Read {len(traces)} trace events from {trace_path}")
         
         # 5. Re-embed into HTML
         print("Re-embedding into explorer.html...")
-        mini_trace = json.dumps(traces, separators=(',', ':'), default=str)
+        mini_trace = json.dumps(traces, separators=(',', ':'))
         html_path = "antigravity_traces/explorer.html"
         
         with open(html_path, "r") as f:
