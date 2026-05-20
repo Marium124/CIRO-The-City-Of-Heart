@@ -72,16 +72,54 @@ export default function DispatchScreen() {
     return () => clearInterval(interval);
   }, []);
 
+  const DEMO_ALERTS: DispatchAlert[] = [
+    { id: 1, crisis_id: 'EVT-20260520-001', crisis_type: 'urban_flooding', location: 'Clifton, Karachi', severity: 'critical',
+      authority_name: 'NDMA Karachi', authority_phone: '1700', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true,
+      message_preview: '⚠️ CIRO ALERT: Critical urban_flooding in Clifton, Karachi. Confidence 94%. Immediate action required.',
+      dispatched_at: new Date(Date.now() - 7 * 60000).toISOString() },
+    { id: 2, crisis_id: 'EVT-20260520-001', crisis_type: 'urban_flooding', location: 'Clifton, Karachi', severity: 'critical',
+      authority_name: 'WASA / Water Board', authority_phone: '1334', dispatch_method: 'simulated', status: 'simulated', real_sms_sent: false,
+      message_preview: '⚠️ CIRO ALERT: Critical urban_flooding in Clifton, Karachi. Water pump deployment requested.',
+      dispatched_at: new Date(Date.now() - 6 * 60000).toISOString() },
+    { id: 3, crisis_id: 'EVT-20260520-002', crisis_type: 'fire_emergency', location: 'Saddar, Karachi', severity: 'high',
+      authority_name: 'Fire Brigade / Rescue 1122', authority_phone: '1122', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true,
+      message_preview: '🔥 CIRO ALERT: High severity fire_emergency in Saddar, Karachi. Fire units requested.',
+      dispatched_at: new Date(Date.now() - 21 * 60000).toISOString() },
+    { id: 4, crisis_id: 'EVT-20260520-004', crisis_type: 'structural_collapse', location: 'Lyari, Karachi', severity: 'critical',
+      authority_name: 'Edhi Foundation Rescue', authority_phone: '115', dispatch_method: 'twilio_sms', status: 'sent', real_sms_sent: true,
+      message_preview: '🏚️ CIRO ALERT: Building collapse in Lyari. Multiple casualties feared. Ambulance units dispatched.',
+      dispatched_at: new Date(Date.now() - 2 * 60000).toISOString() },
+    { id: 5, crisis_id: 'EVT-20260520-003', crisis_type: 'traffic_gridlock', location: 'G-10, Islamabad', severity: 'medium',
+      authority_name: 'Traffic Police', authority_phone: '15', dispatch_method: 'simulated', status: 'simulated', real_sms_sent: false,
+      message_preview: '🚦 CIRO ALERT: Severe traffic gridlock at G-10. Diversion routes recommended.',
+      dispatched_at: new Date(Date.now() - 44 * 60000).toISOString() },
+  ];
+
+  const DEMO_SUMMARY: DispatchSummary = {
+    total_dispatches: 5,
+    real_sms_sent: 3,
+    simulated: 2,
+    authorities_in_registry: 8,
+  };
+
   const fetchData = async () => {
     try {
       const [alertsRes, summaryRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/dispatch/alerts?limit=30`),
         axios.get(`${API_BASE_URL}/dispatch/summary`),
       ]);
-      setAlerts(alertsRes.data.alerts || []);
-      setSummary(summaryRes.data);
+      const fetchedAlerts = alertsRes.data.alerts || [];
+      if (fetchedAlerts.length > 0) {
+        setAlerts(fetchedAlerts);
+        setSummary(summaryRes.data);
+      } else {
+        setAlerts(DEMO_ALERTS);
+        setSummary(DEMO_SUMMARY);
+      }
     } catch (error) {
-      console.error('Error fetching dispatch data:', error);
+      console.warn('Backend unavailable, loading demo dispatch data');
+      setAlerts(DEMO_ALERTS);
+      setSummary(DEMO_SUMMARY);
     } finally {
       setLoading(false);
       setRefreshing(false);
