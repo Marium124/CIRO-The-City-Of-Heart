@@ -103,24 +103,31 @@ export default function CrisisScreen() {
 
   useEffect(() => {
     fetchCrises();
+    // Auto-refresh every 5 seconds so new SOS-triggered crises appear
+    const interval = setInterval(fetchCrises, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchCrises = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/crises/active`);
       const fetchedCrises = response.data.crises || [];
-      if (fetchedCrises.length > 0) {
-        fetchedCrises.sort((a: Crisis, b: Crisis) => {
-          return new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime();
-        });
-        setCrises(fetchedCrises);
-      } else {
-        // Backend returned empty — use demo data for hackathon presentation
-        setCrises(DEMO_CRISES);
-      }
+      
+      // Merge real backend crises on top of demo data
+      // This ensures the screen is never empty AND new SOS crises appear
+      const realIds = new Set(fetchedCrises.map((c: Crisis) => c.crisis_id));
+      const demoFiltered = DEMO_CRISES.filter(d => !realIds.has(d.crisis_id));
+      const merged = [...fetchedCrises, ...demoFiltered];
+      
+      merged.sort((a: Crisis, b: Crisis) => {
+        return new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime();
+      });
+      setCrises(merged);
     } catch (error: any) {
       console.warn('Backend unavailable, loading demo crises:', error.message);
-      setCrises(DEMO_CRISES);
+      if (crises.length === 0) {
+        setCrises(DEMO_CRISES);
+      }
     } finally {
       setLoading(false);
     }
