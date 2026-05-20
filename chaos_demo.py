@@ -50,6 +50,9 @@ class CIROChaosEngineer:
         print("   Proving graceful degradation under extreme conditions")
         print("=" * 70 + "\n")
         
+        # Use a separate trace file for chaos mode so it doesn't overwrite the golden trace
+        os.environ["CIRO_TRACE_FILE"] = "chaos_trace.json"
+        
         manager = AgentManager()
         await manager.initialize()
         

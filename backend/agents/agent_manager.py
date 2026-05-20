@@ -152,7 +152,8 @@ class AgentManager:
         trace_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "antigravity_traces")
         os.makedirs(trace_dir, exist_ok=True)
         
-        trace_file = os.path.join(trace_dir, "sample_trace.json")
+        trace_file_name = os.getenv("CIRO_TRACE_FILE", "sample_trace.json")
+        trace_file = os.path.join(trace_dir, trace_file_name)
         
         trace_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -171,7 +172,7 @@ class AgentManager:
                 pass
                 
         traces.append(trace_entry)
-        traces = traces[-50:] # Limit log size
+        traces = traces[-200:] # Limit log size to 200 to fit a full trace run
         
         try:
             with open(trace_file, "w") as f:
