@@ -1,57 +1,72 @@
-import React from 'react';
-import { ShieldAlert, LayoutDashboard, Activity, Database } from 'lucide-react';
+import { ShieldAlert, LayoutDashboard, Activity, Database, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 interface SidebarProps {
   currentTab: 'dashboard' | 'monitor' | 'knowledge';
   setCurrentTab: (tab: 'dashboard' | 'monitor' | 'knowledge') => void;
   systemStatus: string;
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
 }
+
+const NAV_ITEMS = [
+  { id: 'dashboard' as const, label: 'Dashboard',      icon: LayoutDashboard },
+  { id: 'monitor'   as const, label: 'Agent Monitor',  icon: Activity },
+  { id: 'knowledge' as const, label: 'Knowledge Base', icon: Database },
+];
 
 export const Sidebar: React.FC<SidebarProps> = ({
   currentTab,
   setCurrentTab,
-  systemStatus
+  systemStatus,
+  collapsed,
+  setCollapsed
 }) => {
   return (
-    <aside className="sidebar">
-      <div className="logo">
-        <ShieldAlert size={32} />
-        <span>CIRO System</span>
+    <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
+      {/* Logo */}
+      <div className="sidebar-top">
+        <div className="logo" onClick={() => setCollapsed(!collapsed)} style={{ cursor: 'pointer' }}>
+          <ShieldAlert size={collapsed ? 26 : 32} />
+          {!collapsed && <span>CIRO System</span>}
+        </div>
+
+        {/* Collapse Toggle */}
+        <button
+          className="sidebar-toggle"
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
+        </button>
       </div>
       
+      {/* Navigation */}
       <nav className="nav-links">
-        <button 
-          onClick={() => setCurrentTab('dashboard')} 
-          className={`nav-item ${currentTab === 'dashboard' ? 'active' : ''}`}
-          style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
-        >
-          <LayoutDashboard size={20} />
-          Dashboard
-        </button>
-        
-        <button 
-          onClick={() => setCurrentTab('monitor')} 
-          className={`nav-item ${currentTab === 'monitor' ? 'active' : ''}`}
-          style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
-        >
-          <Activity size={20} />
-          Agent Monitor
-        </button>
-        
-        <button 
-          onClick={() => setCurrentTab('knowledge')} 
-          className={`nav-item ${currentTab === 'knowledge' ? 'active' : ''}`}
-          style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
-        >
-          <Database size={20} />
-          Knowledge Base
-        </button>
+        {NAV_ITEMS.map(item => {
+          const Icon = item.icon;
+          const isActive = currentTab === item.id;
+          return (
+            <button 
+              key={item.id}
+              onClick={() => setCurrentTab(item.id)} 
+              className={`nav-item ${isActive ? 'active' : ''}`}
+              title={collapsed ? item.label : undefined}
+            >
+              <Icon size={20} />
+              {!collapsed && <span>{item.label}</span>}
+            </button>
+          );
+        })}
       </nav>
 
-      <div style={{ marginTop: 'auto', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
-          <div className="pulse" style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: systemStatus === 'Operational' ? 'var(--success)' : 'var(--danger)' }}></div>
-          <span>System: {systemStatus}</span>
+      {/* Status Footer */}
+      <div className="sidebar-footer">
+        <div className={`sidebar-status ${collapsed ? 'sidebar-status-collapsed' : ''}`}>
+          <div className="pulse" style={{ 
+            width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
+            backgroundColor: systemStatus === 'Operational' ? 'var(--success)' : 'var(--danger)' 
+          }} />
+          {!collapsed && <span>System: {systemStatus}</span>}
         </div>
       </div>
     </aside>

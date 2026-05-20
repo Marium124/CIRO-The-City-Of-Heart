@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, Building, Shield, AlertTriangle, HeartPulse, Phone, Info, Copy, RefreshCcw } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Search, Building, Shield, AlertTriangle, HeartPulse, Phone, Info, Copy, RefreshCcw, X, MapPin, Filter, CheckCircle2 } from 'lucide-react';
 import { CITY_ICONS, FALLBACK_CONTACTS } from '../constants';
 
 interface KnowledgeBaseTabProps {
@@ -15,6 +15,16 @@ interface KnowledgeBaseTabProps {
   handleSimulateDispatch: (key: string) => void;
 }
 
+const CATEGORY_CONFIG = [
+  { id: 'all',       label: 'All Resources',       icon: Building,       color: '#6366f1', bg: 'rgba(99, 102, 241, 0.08)' },
+  { id: 'emergency', label: 'Emergency',            icon: Shield,         color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)' },
+  { id: 'disaster',  label: 'Disaster (NDMA)',      icon: AlertTriangle,  color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.08)' },
+  { id: 'medical',   label: 'Medical & Ambulance',  icon: HeartPulse,     color: '#22c55e', bg: 'rgba(34, 197, 94, 0.08)' },
+  { id: 'utilities', label: 'Utilities & Drainage', icon: Phone,          color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)' },
+];
+
+const CITIES = ['All Cities', 'Islamabad', 'Karachi', 'Lahore', 'Peshawar', 'Quetta'];
+
 export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   contacts,
   searchQuery,
@@ -27,142 +37,215 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   handleCopyNumber,
   handleSimulateDispatch
 }) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Count contacts per category for badge numbers
+  const categoryCounts: Record<string, number> = { all: Object.keys(contacts).length };
+  Object.entries(contacts).forEach(([key, contact]: [string, any]) => {
+    const cat = contact.category || (FALLBACK_CONTACTS as any)[key]?.category || 'emergency';
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+  });
+
   // Filtered contacts
   const filteredContactsList = Object.entries(contacts).filter(([key, contact]: [string, any]) => {
-    const matchesSearch = contact.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          contact.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    // Fallback if backend JSON is missing the category attribute
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = !q || contact.name.toLowerCase().includes(q) || 
+                          contact.description.toLowerCase().includes(q) ||
+                          (contact.default || '').includes(q);
     const contactCategory = contact.category || (FALLBACK_CONTACTS as any)[key]?.category || 'emergency';
     const matchesCategory = categoryFilter === 'all' || contactCategory === categoryFilter;
-    
-    // Check if the contact has numbers for the selected city or defaults
     const hasCity = cityFilter === 'All Cities' || contact.numbers[cityFilter] !== undefined;
-    
     return matchesSearch && matchesCategory && hasCity;
   });
+
+  const activeFiltersCount = (categoryFilter !== 'all' ? 1 : 0) + (cityFilter !== 'All Cities' ? 1 : 0) + (searchQuery ? 1 : 0);
+
+  const clearAllFilters = () => {
+    setSearchQuery('');
+    setCityFilter('All Cities');
+    setCategoryFilter('all');
+  };
+
+  const handleCopyWithFeedback = (num: string, key: string) => {
+    handleCopyNumber(num);
+    setCopiedId(key);
+    setTimeout(() => setCopiedId(null), 1500);
+  };
+
+  // Keyboard shortcut: Cmd/Ctrl+K to focus search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
 
   return (
     <>
       <header className="header">
         <div>
           <h1>Crisis Response Knowledge Base</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Query live emergency contacts registry, WASA helplines, WASA blockages guides, and route dispatches.</p>
+          <p style={{ color: 'var(--text-muted)' }}>Query live emergency contacts, WASA helplines, and dispatch routing intelligence.</p>
         </div>
       </header>
 
       <div className="kb-layout">
-        {/* Sidebar filter options */}
+        {/* ─── LEFT: Filter Sidebar ─── */}
         <div className="kb-filter-panel">
-          {/* Search query input */}
-          <div>
-            <h3 className="kb-sidebar-title">Keyword Search</h3>
-            <div className="search-wrapper">
-              <Search className="search-icon" size={18} />
+
+          {/* ═══ SEARCH BOX ═══ */}
+          <div className="kb-search-section">
+            <div className={`kb-search-box ${searchFocused ? 'focused' : ''} ${searchQuery ? 'has-value' : ''}`}>
+              <Search className="kb-search-icon" size={18} />
               <input 
+                ref={searchInputRef}
                 type="text" 
-                placeholder="Search rescue, WASA..." 
-                className="kb-input"
+                placeholder="Search agencies, helplines..." 
+                className="kb-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
               />
-            </div>
-          </div>
-
-          {/* City filters */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h3 className="kb-sidebar-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '1.2rem' }}>📍</span> Operational Region
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-              {['All Cities', 'Islamabad', 'Karachi', 'Lahore', 'Peshawar', 'Quetta'].map(city => (
-                <button
-                  key={city}
-                  onClick={() => setCityFilter(city)}
-                  style={{
-                    background: cityFilter === city ? 'var(--primary)' : 'rgba(255,255,255,0.02)',
-                    color: cityFilter === city ? 'white' : 'var(--text-muted)',
-                    border: `1px solid ${cityFilter === city ? 'var(--primary)' : 'var(--border)'}`,
-                    padding: '0.6rem 0.5rem',
-                    borderRadius: '0.5rem',
-                    fontSize: '0.8rem',
-                    fontWeight: cityFilter === city ? 'bold' : '500',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.4rem'
-                  }}
-                >
-                  <span style={{ fontSize: '1.1rem' }}>{CITY_ICONS[city]}</span>
-                  {city}
+              {searchQuery && (
+                <button className="kb-search-clear" onClick={() => setSearchQuery('')} title="Clear search">
+                  <X size={14} />
                 </button>
-              ))}
+              )}
+              <kbd className="kb-search-kbd">⌘K</kbd>
             </div>
           </div>
 
-          {/* Category filters */}
-          <div>
-            <h3 className="kb-sidebar-title">Resource Category</h3>
-            <div className="kb-category-list">
-              <button 
-                className={`kb-category-btn ${categoryFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setCategoryFilter('all')}
-              >
-                <Building size={16} /> All Resources
-              </button>
-              <button 
-                className={`kb-category-btn ${categoryFilter === 'emergency' ? 'active' : ''}`}
-                onClick={() => setCategoryFilter('emergency')}
-              >
-                <Shield size={16} /> Emergency Services
-              </button>
-              <button 
-                className={`kb-category-btn ${categoryFilter === 'disaster' ? 'active' : ''}`}
-                onClick={() => setCategoryFilter('disaster')}
-              >
-                <AlertTriangle size={16} /> Disaster (NDMA)
-              </button>
-              <button 
-                className={`kb-category-btn ${categoryFilter === 'medical' ? 'active' : ''}`}
-                onClick={() => setCategoryFilter('medical')}
-              >
-                <HeartPulse size={16} /> Medical & Ambulance
-              </button>
-              <button 
-                className={`kb-category-btn ${categoryFilter === 'utilities' ? 'active' : ''}`}
-                onClick={() => setCategoryFilter('utilities')}
-              >
-                <Phone size={16} /> Utilities & Drainage
-              </button>
+          {/* ═══ CITY REGION SELECTOR ═══ */}
+          <div className="kb-filter-group">
+            <h3 className="kb-filter-title">
+              <MapPin size={14} />
+              <span>Operational Region</span>
+            </h3>
+            <div className="kb-city-grid">
+              {CITIES.map(city => {
+                const isActive = cityFilter === city;
+                return (
+                  <button
+                    key={city}
+                    onClick={() => setCityFilter(city)}
+                    className={`kb-city-chip ${isActive ? 'active' : ''}`}
+                  >
+                    <span className="kb-city-emoji">{CITY_ICONS[city]}</span>
+                    <span className="kb-city-label">{city === 'All Cities' ? 'All' : city}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '0.5rem', padding: '0.75rem', lineHeight: '1.4' }}>
-            <div style={{ fontWeight: 600, color: 'var(--primary)', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <Info size={12} /> Contact Syncing
+          {/* ═══ RESOURCE CATEGORY SELECTOR ═══ */}
+          <div className="kb-filter-group">
+            <h3 className="kb-filter-title">
+              <Filter size={14} />
+              <span>Resource Category</span>
+            </h3>
+            <div className="kb-category-stack">
+              {CATEGORY_CONFIG.map(cat => {
+                const IconComp = cat.icon;
+                const isActive = categoryFilter === cat.id;
+                const count = categoryCounts[cat.id] || 0;
+                return (
+                  <button 
+                    key={cat.id}
+                    className={`kb-cat-btn ${isActive ? 'active' : ''}`}
+                    onClick={() => setCategoryFilter(cat.id)}
+                    style={{
+                      '--cat-color': cat.color,
+                      '--cat-bg': cat.bg,
+                    } as React.CSSProperties}
+                  >
+                    <div className="kb-cat-btn-left">
+                      <div className="kb-cat-icon-wrap">
+                        <IconComp size={15} />
+                      </div>
+                      <span className="kb-cat-label">{cat.label}</span>
+                    </div>
+                    <span className="kb-cat-count">{count}</span>
+                  </button>
+                );
+              })}
             </div>
-            This directory synchronizes live with the backend agent knowledge registry: <code>contacts_registry.json</code>
+          </div>
+
+          {/* ═══ ACTIVE FILTERS PILL BAR ═══ */}
+          {activeFiltersCount > 0 && (
+            <div className="kb-active-filters">
+              <div className="kb-active-filters-header">
+                <span className="kb-active-filters-label">
+                  <Filter size={12} />
+                  {activeFiltersCount} active filter{activeFiltersCount > 1 ? 's' : ''}
+                </span>
+                <button className="kb-clear-all-btn" onClick={clearAllFilters}>
+                  Clear all
+                </button>
+              </div>
+              <div className="kb-filter-pills">
+                {searchQuery && (
+                  <span className="kb-filter-pill">
+                    <Search size={11} /> "{searchQuery}"
+                    <button onClick={() => setSearchQuery('')}><X size={10} /></button>
+                  </span>
+                )}
+                {cityFilter !== 'All Cities' && (
+                  <span className="kb-filter-pill">
+                    <MapPin size={11} /> {cityFilter}
+                    <button onClick={() => setCityFilter('All Cities')}><X size={10} /></button>
+                  </span>
+                )}
+                {categoryFilter !== 'all' && (
+                  <span className="kb-filter-pill">
+                    <Shield size={11} /> {CATEGORY_CONFIG.find(c => c.id === categoryFilter)?.label}
+                    <button onClick={() => setCategoryFilter('all')}><X size={10} /></button>
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ═══ SYNC NOTE ═══ */}
+          <div className="kb-sync-note">
+            <Info size={12} />
+            <span>Synced with <code>contacts_registry.json</code></span>
           </div>
         </div>
 
-        {/* Grid content displaying filtered cards */}
+        {/* ─── RIGHT: Results Grid ─── */}
         <div>
-          <div style={{ marginBottom: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>
-            Showing {filteredContactsList.length} registered emergency agencies matches
+          <div className="kb-results-header">
+            <span className="kb-results-count">
+              {filteredContactsList.length} {filteredContactsList.length === 1 ? 'agency' : 'agencies'}
+            </span>
+            {activeFiltersCount > 0 && (
+              <span className="kb-results-filtered">filtered</span>
+            )}
           </div>
 
           {filteredContactsList.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '1rem', color: 'var(--text-muted)' }}>
-              No emergency responders match your search criteria. Try removing filters.
+            <div className="kb-empty-state">
+              <Search size={40} />
+              <h3>No agencies match your criteria</h3>
+              <p>Try broadening your search or removing some filters.</p>
+              <button className="kb-empty-reset-btn" onClick={clearAllFilters}>
+                Reset all filters
+              </button>
             </div>
           ) : (
             <div className="kb-grid">
               {filteredContactsList.map(([key, contact]: [string, any]) => {
-                // Get city-specific number or default
                 const activeNumber = cityFilter === 'All Cities' ? contact.default : (contact.numbers[cityFilter] || contact.default);
-
+                const isCopied = copiedId === key;
                 return (
                   <div key={key} className="kb-card">
                     <div>
@@ -181,7 +264,6 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
                     </div>
 
                     <div>
-                      {/* Region Display */}
                       <div className="kb-number-display">
                         <div>
                           <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
@@ -190,15 +272,14 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
                           <div className="kb-number-val">{activeNumber}</div>
                         </div>
                         <button 
-                          onClick={() => handleCopyNumber(activeNumber)}
-                          style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '0.4rem', borderRadius: '0.25rem', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                          onClick={() => handleCopyWithFeedback(activeNumber, key)}
+                          className={`kb-copy-btn ${isCopied ? 'copied' : ''}`}
                           title="Copy Helpline"
                         >
-                          <Copy size={16} />
+                          {isCopied ? <CheckCircle2 size={16} /> : <Copy size={16} />}
                         </button>
                       </div>
 
-                      {/* Card Footer action buttons */}
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button 
                           onClick={() => handleSimulateDispatch(key)}

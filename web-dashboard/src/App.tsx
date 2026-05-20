@@ -21,6 +21,7 @@ function App() {
   const [systemStatus, setSystemStatus] = useState('Checking...');
   const [activeCrises, setActiveCrises] = useState(0);
   const logEndRef = useRef<HTMLDivElement>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Agent Monitor states
   const [selectedAgentId, setSelectedAgentId] = useState<string>('signal_ingestion');
@@ -147,12 +148,14 @@ function App() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className={`dashboard-container ${sidebarCollapsed ? 'sidebar-is-collapsed' : ''}`}>
       {/* Sidebar navigation */}
       <Sidebar 
         currentTab={currentTab} 
         setCurrentTab={setCurrentTab} 
-        systemStatus={systemStatus} 
+        systemStatus={systemStatus}
+        collapsed={sidebarCollapsed}
+        setCollapsed={setSidebarCollapsed}
       />
 
       {/* Main Content Area */}

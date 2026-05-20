@@ -1,413 +1,5 @@
 [
   {
-    "timestamp": "2026-05-20T00:36:14.232781",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.234502",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.235872",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.237247",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.239554",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.241233",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.242579",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.243910",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.245252",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.247755",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.249260",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.250601",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.251992",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.253755",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.255108",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.257259",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.258739",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.261162",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.263664",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.265076",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.267219",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "reasoning",
-      "action": "process",
-      "details": {
-        "events_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.268673",
-    "event_type": "task_plan_generated",
-    "data": {
-      "goal": "Crisis response: full_cycle",
-      "steps": [
-        {
-          "agent": "signal_ingestion",
-          "task": "Ingest and normalize multi-source signals"
-        },
-        {
-          "agent": "event_detection",
-          "task": "Spatial-temporal clustering of signals"
-        },
-        {
-          "agent": "reasoning",
-          "task": "Assess severity and humanitarian impact"
-        },
-        {
-          "agent": "action_planning",
-          "task": "Generate constrained resource allocation plan"
-        },
-        {
-          "agent": "simulation",
-          "task": "Simulate action outcomes and side-effects"
-        },
-        {
-          "agent": "dispatch",
-          "task": "Notify relevant authorities"
-        },
-        {
-          "agent": "visualization",
-          "task": "Push dynamic updates to dashboard"
-        }
-      ],
-      "constraints": [
-        "Total resources cannot exceed municipal inventory",
-        "Confidence threshold >= 0.6 for autonomous dispatch",
-        "Response time target < 15 minutes"
-      ],
-      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.270150",
-    "event_type": "workflow_execution_started",
-    "data": {
-      "workflow": "full_cycle"
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.271541",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process",
-      "details": {
-        "input_type": "unknown"
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.273459",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "signal_ingestion",
-      "action": "process_complete",
-      "details": {
-        "social_count": 0,
-        "weather_count": 0,
-        "traffic_count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.274778",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process",
-      "details": {
-        "total_signals": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.277137",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "anomalies_detected",
-      "details": {
-        "count": 0
-      }
-    }
-  },
-  {
-    "timestamp": "2026-05-20T00:36:14.278648",
-    "event_type": "agent_action",
-    "data": {
-      "agent_id": "event_detection",
-      "action": "process_complete",
-      "details": {
-        "clusters_found": 0,
-        "anomalies_found": 0,
-        "events_detected": 0
-      }
-    }
-  },
-  {
     "timestamp": "2026-05-20T00:36:14.280356",
     "event_type": "agent_action",
     "data": {
@@ -675,6 +267,392 @@
       "action": "initialize",
       "details": {
         "status": "ready"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.551569",
+    "event_type": "task_plan_generated",
+    "data": {
+      "goal": "Crisis response: full_cycle",
+      "steps": [
+        {
+          "agent": "signal_ingestion",
+          "task": "Ingest and normalize multi-source signals"
+        },
+        {
+          "agent": "event_detection",
+          "task": "Spatial-temporal clustering of signals"
+        },
+        {
+          "agent": "reasoning",
+          "task": "Assess severity and humanitarian impact"
+        },
+        {
+          "agent": "action_planning",
+          "task": "Generate constrained resource allocation plan"
+        },
+        {
+          "agent": "simulation",
+          "task": "Simulate action outcomes and side-effects"
+        },
+        {
+          "agent": "dispatch",
+          "task": "Notify relevant authorities"
+        },
+        {
+          "agent": "visualization",
+          "task": "Push dynamic updates to dashboard"
+        }
+      ],
+      "constraints": [
+        "Total resources cannot exceed municipal inventory",
+        "Confidence threshold >= 0.6 for autonomous dispatch",
+        "Response time target < 15 minutes"
+      ],
+      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.561544",
+    "event_type": "workflow_execution_started",
+    "data": {
+      "workflow": "full_cycle"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.571065",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process",
+      "details": {
+        "input_type": "unknown"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.583289",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "unknown",
+        "urgency": "high"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.592929",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process_complete",
+      "details": {
+        "social_count": 1,
+        "weather_count": 0,
+        "traffic_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.606741",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "receive_message",
+      "details": {
+        "sender": "signal_ingestion",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.610743",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "send_message",
+      "details": {
+        "receiver": "event_detection",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.618069",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process",
+      "details": {
+        "total_signals": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.624586",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "anomalies_detected",
+      "details": {
+        "count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.630655",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process_complete",
+      "details": {
+        "clusters_found": 0,
+        "anomalies_found": 1,
+        "events_detected": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.638544",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "receive_message",
+      "details": {
+        "sender": "event_detection",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.643018",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "send_message",
+      "details": {
+        "receiver": "reasoning",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:10.649367",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "process",
+      "details": {
+        "events_count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:04:16.678901",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "ethical_reasoning_complete",
+      "details": {
+        "crisis_detected": false,
+        "impact_score": 6.0,
+        "city": "Peshawar"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.531007",
+    "event_type": "task_plan_generated",
+    "data": {
+      "goal": "Crisis response: full_cycle",
+      "steps": [
+        {
+          "agent": "signal_ingestion",
+          "task": "Ingest and normalize multi-source signals"
+        },
+        {
+          "agent": "event_detection",
+          "task": "Spatial-temporal clustering of signals"
+        },
+        {
+          "agent": "reasoning",
+          "task": "Assess severity and humanitarian impact"
+        },
+        {
+          "agent": "action_planning",
+          "task": "Generate constrained resource allocation plan"
+        },
+        {
+          "agent": "simulation",
+          "task": "Simulate action outcomes and side-effects"
+        },
+        {
+          "agent": "dispatch",
+          "task": "Notify relevant authorities"
+        },
+        {
+          "agent": "visualization",
+          "task": "Push dynamic updates to dashboard"
+        }
+      ],
+      "constraints": [
+        "Total resources cannot exceed municipal inventory",
+        "Confidence threshold >= 0.6 for autonomous dispatch",
+        "Response time target < 15 minutes"
+      ],
+      "fallback": "If confidence < 0.6 or resources depleted, escalate to manual review"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.540188",
+    "event_type": "workflow_execution_started",
+    "data": {
+      "workflow": "full_cycle"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.544355",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process",
+      "details": {
+        "input_type": "unknown"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.551462",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "social_media_processed",
+      "details": {
+        "location": "unknown",
+        "urgency": "high"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.555261",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "process_complete",
+      "details": {
+        "social_count": 1,
+        "weather_count": 0,
+        "traffic_count": 0
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.562949",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "receive_message",
+      "details": {
+        "sender": "signal_ingestion",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.565552",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "signal_ingestion",
+      "action": "send_message",
+      "details": {
+        "receiver": "event_detection",
+        "type": "new_signals"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.567425",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process",
+      "details": {
+        "total_signals": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.570920",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "anomalies_detected",
+      "details": {
+        "count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.573580",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "process_complete",
+      "details": {
+        "clusters_found": 0,
+        "anomalies_found": 1,
+        "events_detected": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.576815",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "receive_message",
+      "details": {
+        "sender": "event_detection",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.578707",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "event_detection",
+      "action": "send_message",
+      "details": {
+        "receiver": "reasoning",
+        "type": "events_detected"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.581625",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "process",
+      "details": {
+        "events_count": 1
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:17:44.591562",
+    "event_type": "agent_action",
+    "data": {
+      "agent_id": "reasoning",
+      "action": "ethical_reasoning_complete",
+      "details": {
+        "crisis_detected": false,
+        "impact_score": 10.0,
+        "city": "Karachi"
       }
     }
   }
