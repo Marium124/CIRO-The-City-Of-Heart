@@ -1,4 +1,6 @@
 name: Build Android APK
+permissions:
+  contents: write
 
 # Trigger: push a version tag like v1.0.0, v1.1.0, etc.
 on:
