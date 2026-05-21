@@ -1,0 +1,90 @@
+name: Build Android APK
+
+# Trigger: push a version tag like v1.0.0, v1.1.0, etc.
+on:
+  push:
+    tags:
+      - 'v*'
+
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: 'Release name (e.g. v1.1.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    name: Build APK & Publish Release
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mobile-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build APK via EAS
+        run: eas build --platform android --profile preview --non-interactive --wait
+
+      - name: Download APK artifact
+        run: |
+          # Get the build URL from the latest finished build
+          BUILD_URL=$(eas build:list --platform android --status finished --limit 1 --json | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['artifacts']['buildUrl'])")
+          echo "Downloading APK from: $BUILD_URL"
+          
+          # Determine version tag
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.release_name }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
+          
+          curl -L -o "CIRO-${VERSION}.apk" "$BUILD_URL"
+          echo "APK_PATH=mobile-app/CIRO-${VERSION}.apk" >> $GITHUB_ENV
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          ls -lh "CIRO-${VERSION}.apk"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "CIRO ${{ env.VERSION }}"
+          tag_name: ${{ env.VERSION }}
+          body: |
+            ## CIRO Mobile App - ${{ env.VERSION }}
+            
+            ### Installation
+            1. Download `CIRO-${{ env.VERSION }}.apk` below
+            2. Transfer to your Android device
+            3. Enable "Install from unknown sources" if prompted
+            4. Open the APK to install
+            
+            ### Build Info
+            - **Platform:** Android
+            - **SDK:** Expo 54
+            - **Profile:** Preview (sideload-ready APK)
+            - **Built:** ${{ github.event.head_commit.timestamp || 'Manual trigger' }}
+          files: ${{ env.APK_PATH }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
