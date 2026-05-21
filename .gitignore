@@ -25,3 +25,4 @@ chaos_resilience_report.json
 backend/config.json
 prompts_log.md
 *.apk
+graphify-out/
