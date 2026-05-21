@@ -13,7 +13,7 @@ module.exports = {
   expo: {
     name: "CIRO",
     slug: "crisis-response-app",
-    version: "1.0.1",
+    version: "1.0.2",
     sdkVersion: "54.0.0",
     orientation: "portrait",
     userInterfaceStyle: "dark",
@@ -27,7 +27,7 @@ module.exports = {
     },
     android: {
       package: "com.ciro.crisisresponse",
-      versionCode: 2,
+      versionCode: 3,
       adaptiveIcon: {
         backgroundColor: "#1A1A2E",
       },
