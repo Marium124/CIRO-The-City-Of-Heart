@@ -23,3 +23,5 @@ ciro video/
 DEMO_MODE_ANALYSIS.md
 chaos_resilience_report.json
 backend/config.json
+prompts_log.md
+*.apk
