@@ -25,21 +25,18 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
-      ]
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAMf66VnjZjQbIzfmqW7w78ZiVGEcs9Op0"
+        }
+      }
     },
     "extra": {
       "eas": {
         "projectId": "94affc3c-076c-42ea-ac2d-b5a3146c992c"
       }
     },
-    "plugins": [
-      [
-        "react-native-maps",
-        {
-          "androidGoogleMapsApiKey": "GOOGLE_MAPS_API_KEY_PLACEHOLDER"
-        }
-      ]
-    ],
     "owner": "theorchestrators"
   }
 }
