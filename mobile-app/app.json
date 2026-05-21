@@ -17,7 +17,21 @@
       "bundleIdentifier": "com.ciro.crisisresponse"
     },
     "android": {
-      "package": "com.ciro.crisisresponse"
-    }
+      "package": "com.ciro.crisisresponse",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#1A1A2E"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "94affc3c-076c-42ea-ac2d-b5a3146c992c"
+      }
+    },
+    "owner": "theorchestrators"
   }
 }
