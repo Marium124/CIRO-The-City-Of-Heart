@@ -1,23 +1,86 @@
 /**
  * Map Screen - Visualize crisis locations and traffic
+ * Wrapped in error boundary to prevent app crashes when
+ * Google Maps API key is missing or maps fail to load.
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Component, ErrorInfo, ReactNode} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert,
   Dimensions,
+  Platform,
+  ActivityIndicator,
 } from 'react-native';
-import MapView, {Marker, Circle} from 'react-native-maps';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { Theme } from '../theme';
 import { CONFIG } from '../config';
 import axios from 'axios';
 
 const { width } = Dimensions.get('window');
+
+// ── Error Boundary ──────────────────────────────────────────────────────
+// Catches native crashes from MapView (e.g. missing Google Maps API key)
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class MapErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('MapView crash caught:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <MapFallback error={this.state.error?.message} />;
+    }
+    return this.props.children;
+  }
+}
+
+// ── Fallback UI ─────────────────────────────────────────────────────────
+// Shown when MapView fails to render (no API key, network error, etc.)
+
+function MapFallback({ error }: { error?: string }) {
+  return (
+    <View style={styles.fallbackContainer}>
+      <View style={styles.fallbackCard}>
+        <View style={styles.fallbackIconCircle}>
+          <Icon name="map" size={48} color={Theme.colors.primary} />
+        </View>
+        <Text style={styles.fallbackTitle}>Map Unavailable</Text>
+        <Text style={styles.fallbackMessage}>
+          Google Maps could not be loaded on this device. Crisis data is still available in the Crises tab.
+        </Text>
+        {error && (
+          <View style={styles.errorBox}>
+            <Icon name="info-outline" size={14} color={Theme.colors.textSecondary} />
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+}
+
+// ── Crisis Marker Interface ─────────────────────────────────────────────
 
 interface CrisisMarker {
   id: string;
@@ -30,10 +93,14 @@ interface CrisisMarker {
   responseRadius: number;
 }
 
-export default function MapScreen() {
+// ── Map Content ─────────────────────────────────────────────────────────
+// Lazy-loads react-native-maps to catch import-level crashes
+
+function MapContent() {
   const [visionMode, setVisionMode] = useState<'response' | 'inaction'>('response');
   const [crisisMarkers, setCrisisMarkers] = useState<CrisisMarker[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mapReady, setMapReady] = useState(false);
   const [hasCentered, setHasCentered] = useState(false);
   const [region, setRegion] = useState({
     latitude: 30.3753, // Center of Pakistan
@@ -41,6 +108,22 @@ export default function MapScreen() {
     latitudeDelta: 12.0,
     longitudeDelta: 12.0,
   });
+
+  // Lazy import react-native-maps to catch native module errors
+  const [MapModule, setMapModule] = useState<any>(null);
+  const [mapLoadError, setMapLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const maps = require('react-native-maps');
+      setMapModule(maps);
+      setMapReady(true);
+    } catch (e: any) {
+      console.error('Failed to load react-native-maps:', e);
+      setMapLoadError(e.message || 'Maps module not available');
+      setMapReady(true);
+    }
+  }, []);
 
   useEffect(() => {
     fetchCrises();
@@ -107,6 +190,22 @@ export default function MapScreen() {
     }
   ];
 
+  if (!mapReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Theme.colors.primary} />
+        <Text style={styles.loadingText}>Loading Map...</Text>
+      </View>
+    );
+  }
+
+  if (mapLoadError || !MapModule) {
+    return <MapFallback error={mapLoadError || 'Maps module not available'} />;
+  }
+
+  const MapView = MapModule.default;
+  const { Marker, Circle } = MapModule;
+
   return (
     <View style={styles.container}>
       <MapView
@@ -168,6 +267,16 @@ export default function MapScreen() {
         </View>
       </View>
     </View>
+  );
+}
+
+// ── Exported Screen ─────────────────────────────────────────────────────
+
+export default function MapScreen() {
+  return (
+    <MapErrorBoundary>
+      <MapContent />
+    </MapErrorBoundary>
   );
 }
 
@@ -259,5 +368,69 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
+  // Fallback & loading styles
+  fallbackContainer: {
+    flex: 1,
+    backgroundColor: Theme.colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+  },
+  fallbackCard: {
+    backgroundColor: Theme.colors.surface,
+    borderRadius: Theme.borderRadius.lg,
+    padding: 30,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Theme.colors.glassBorder,
+    width: '100%',
+    maxWidth: 340,
+  },
+  fallbackIconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: Theme.colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  fallbackTitle: {
+    color: Theme.colors.text,
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  fallbackMessage: {
+    color: Theme.colors.textSecondary,
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  errorBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Theme.colors.background,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: Theme.borderRadius.sm,
+  },
+  errorText: {
+    color: Theme.colors.textSecondary,
+    fontSize: 11,
+    marginLeft: 6,
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: Theme.colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: Theme.colors.textSecondary,
+    marginTop: 12,
+    fontSize: 14,
+  },
 });
-
