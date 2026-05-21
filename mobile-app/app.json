@@ -25,12 +25,7 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
-      ],
-      "config": {
-        "googleMaps": {
-          "apiKey": "REDACTED_GOOGLE_MAPS_KEY"
-        }
-      }
+      ]
     },
     "extra": {
       "eas": {
